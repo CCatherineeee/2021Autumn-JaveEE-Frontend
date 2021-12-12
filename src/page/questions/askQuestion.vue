@@ -69,7 +69,7 @@ export default {
         {
           headers: {
             'Content-Type': 'application/json',
-            'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwMDAxMCwiZXhwIjoxNjM5MzAzMjk1LCJpYXQiOjE2MzkzMDE0OTV9.aG1gAMuhmuYcCbmO3dtAxagyEPUagRcJd2cGpHS1Dew'
+            'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwMDAxMSwiZXhwIjoxNjM5MzA2NzkxLCJpYXQiOjE2MzkzMDQ5OTF9.0cBMYbLomav4yUs-FDkj9yRItUUm2CMAquri0VkZ2qs'
           }
         }
       ).then((res) => {
@@ -78,6 +78,8 @@ export default {
           this.form.description = ''
           this.form.tagnames = ''
           this.form.title = ''
+        } else if (res.data.code === 500 & res.data.message === 'not login') {
+          this.$message('please login first！')
         }
       })
     }
