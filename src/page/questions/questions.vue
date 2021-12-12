@@ -12,7 +12,7 @@
 
     <div v-for="(item,index) in questionList" :key="index">
       <el-container class='posts'>
-        <el-aside style="width: 58px">
+        <el-aside style="width: 80px">
           <div class='stats-container'>
             <div class='stats'>
               <div class='vote'>
