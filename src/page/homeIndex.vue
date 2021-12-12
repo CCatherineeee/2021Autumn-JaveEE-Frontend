@@ -3,7 +3,7 @@
         <!-- <top-bar></top-bar> -->
         <div style="width: 100%;height: 100%;" class="banner-view">
             <!-- <router-view name="childBanner"></router-view> -->
-            <home-banner v-if="isBannerShow"></home-banner>
+            <!-- <home-banner v-if="isBannerShow"></home-banner> -->
         </div>
         <section class="content">
            <div class="left-sidebar">

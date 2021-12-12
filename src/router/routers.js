@@ -5,7 +5,8 @@ const Questions = () => import('../page/questions/questions')
 const Tags = () => import('../page/Tags/tags')
 const Users = () => import('../page/Users/users')
 const Search = () => import('../page/search/search')
-const Login = () => import("../page/login/login")
+const Login = () => import('../page/login/login')
+const askQuestion = () => import('../page/questions/askQuestion')
 // const childBanner = [
 //   {
 //     path: '/',
@@ -50,13 +51,13 @@ const Login = () => import("../page/login/login")
 const index = [
   {
     path: '*',
-    redirect: '/',
+    redirect: '/'
 
   },
   {
     path: '/login',
     name: 'Login',
-    component:Login
+    component: Login
   },
   {
     path: '/',
@@ -78,9 +79,15 @@ const index = [
         component: Tags
       },
       {
+        path: '/askQuestion',
+        name: 'askQuestion',
+        component: askQuestion
+      },
+      {
         path: '/questions',
         name: 'Questions',
-        component: Questions
+        component: Questions,
+        children: []
       },
       {
         path: '/jobs',

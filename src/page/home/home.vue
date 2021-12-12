@@ -6,7 +6,7 @@
                     Top Questions
                 </h1>
                  <div class="ask-question">
-                     <button disabled="disabled">Ask Question</button>
+                     <button @click="skipToAsk()">Ask Question</button>
                  </div>
             </div>
             <div class="filter-grid">
@@ -193,6 +193,9 @@ export default {
         this.filterArr[i].isSelected = false
       }
       this.filterArr[index].isSelected = true
+    },
+    skipToAsk () {
+      this.$router.push({name: 'askQuestion'})
     }
   }
 }

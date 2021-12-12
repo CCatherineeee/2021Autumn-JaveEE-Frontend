@@ -12,6 +12,7 @@ import axios from 'axios'
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 
+Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 
 const router = new VueRouter({
@@ -21,7 +22,6 @@ const router = new VueRouter({
 /* eslint-disable no-new */
 new Vue({
   router,
-  axios,
   // el: '#app',
   render: h => h(App)
 }).$mount('#app')
