@@ -13,7 +13,7 @@
                 <div class="empty"></div>
                 <div class="filter">
                     <div class="filter-inner">
-                        <a 
+                        <a
                         v-for="(item, index) in filterArr"
                         :class="{active: item.isSelected}"
                         @click="selectChannel(item, index)"
@@ -32,7 +32,7 @@
                                 <div class="mini-counts">{{item.score}}</div>
                                 <p>votes</p>
                             </div>
-                            <div 
+                            <div
                             :class="{answered: item.answer_count > 0 ? true : false }"
                             class="answers"
                             >
@@ -51,8 +51,8 @@
                                 </a>
                             </h3>
                             <div class="tags">
-                                <a 
-                                v-for="(tag, tagIndex) in item.tags" 
+                                <a
+                                v-for="(tag, tagIndex) in item.tags"
                                 href="javascript:void(0)"
                                 :key="tagIndex"
                                 >{{tag}}</a>
@@ -67,7 +67,7 @@
                                             modified
                                         </span>
                                     </span>
-                                    <span v-else>asked</span> 
+                                    <span v-else>asked</span>
                                     <span class="relativetime">
                                         <span v-if="item.creation_date && (!item.last_activity_date && !item.last_edit_date)">
                                             {{calculateGap(item.creation_date)}}
@@ -100,104 +100,104 @@
 <script>
 
 export default {
-    name: 'home',
-    components:{
-        
-    },
-    watch: {
-        // 'questions': function (value) {
-        //     // this.calculateGap()
-        //     console.log(value);
-        // }
-    },
-    data () {
-        return {
-            isSelected: false,
-            filterArr: [
-                {
-                    name: 'interesting',
-                    isSelected: true
-                },
-                {
-                    name: 'featured',
-                    isSelected: false
-                },
-                {
-                    name: 'hot',
-                    isSelected: false
-                },
-                {
-                    name: 'week',
-                    isSelected: false
-                },
-                {
-                    name: 'month',
-                    isSelected: false
-                }
-            ],
-            prefix: 'http://api.stackexchange.com/2.2/',
-            questions: []
-        }
-    },
-    mounted () {
-        this.getQuestions()
-    },
-    filters: {
-       
-    },
-    methods: {
-        calculateGap (time) {
-            let old = (time + '').length > 10 ? time : time * 1000;
-            let gap = new Date().getTime() - old;
-            let days = parseInt(gap / parseInt(1000 * 60 * 60 * 24));
-            let hours = parseInt(gap / parseInt(1000 * 60 * 60));
-            let mins = parseInt(gap / parseInt(1000 * 60));
-            let secs = parseInt(gap / parseInt(1000));
-            if (days > 0) {
-                return days + ' days'
-            } else {
-                if (hours > 0) {
-                    return hours + ' hours'
-                } else {
-                   if (mins > 0) {
-                       return mins + ' mins'
-                   } else {
-                       if (secs > 0) {
-                           return secs + ' secs'
-                       }
-                   }
-                }
-            }
+  name: 'home',
+  components: {
+
+  },
+  watch: {
+    // 'questions': function (value) {
+    //     // this.calculateGap()
+    //     console.log(value);
+    // }
+  },
+  data () {
+    return {
+      isSelected: false,
+      filterArr: [
+        {
+          name: 'interesting',
+          isSelected: true
         },
-        getQuestions () {
-            let that = this
-            axios.get(this.prefix + 'questions',{
-                params: {
-                    order: 'desc',
-                    sort: 'activity',
-                    site: 'stackoverflow'
-                }
-            })
-            .then(function (res) {
-                console.log(res)
-               that.questions = res.data.items;
-                console.log(that.questions);
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+        {
+          name: 'featured',
+          isSelected: false
         },
-        selectChannel (item, index) {
-            console.log(item, index)
-            for (let i in this.filterArr) {
-                this.filterArr[i].isSelected = false;
-            }
-            this.filterArr[index].isSelected = true;
+        {
+          name: 'hot',
+          isSelected: false
+        },
+        {
+          name: 'week',
+          isSelected: false
+        },
+        {
+          name: 'month',
+          isSelected: false
         }
+      ],
+      prefix: 'http://api.stackexchange.com/2.2/',
+      questions: []
     }
+  },
+  mounted () {
+    this.getQuestions()
+  },
+  filters: {
+
+  },
+  methods: {
+    calculateGap (time) {
+      let old = (time + '').length > 10 ? time : time * 1000
+      let gap = new Date().getTime() - old
+      let days = parseInt(gap / parseInt(1000 * 60 * 60 * 24))
+      let hours = parseInt(gap / parseInt(1000 * 60 * 60))
+      let mins = parseInt(gap / parseInt(1000 * 60))
+      let secs = parseInt(gap / parseInt(1000))
+      if (days > 0) {
+        return days + ' days'
+      } else {
+        if (hours > 0) {
+          return hours + ' hours'
+        } else {
+          if (mins > 0) {
+            return mins + ' mins'
+          } else {
+            if (secs > 0) {
+              return secs + ' secs'
+            }
+          }
+        }
+      }
+    },
+    getQuestions () {
+      let that = this
+      this.axios.get(this.prefix + 'questions', {
+        params: {
+          order: 'desc',
+          sort: 'activity',
+          site: 'stackoverflow'
+        }
+      })
+        .then(function (res) {
+          console.log(res)
+          that.questions = res.data.items
+          console.log(that.questions)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    selectChannel (item, index) {
+      console.log(item, index)
+      for (let i in this.filterArr) {
+        this.filterArr[i].isSelected = false
+      }
+      this.filterArr[index].isSelected = true
+    }
+  }
 }
 </script>
-<style scoped> 
+<style scoped>
 /***************/
 .reputation-score {
     font-weight: bold;
@@ -248,7 +248,7 @@ export default {
 }
 .tags {
     line-height: 18px;
-    float: left; 
+    float: left;
 }
 /****************/
 .summary h3 {
@@ -275,7 +275,7 @@ export default {
 .question-summary .interaction .answered .mini-counts {
     color: #45A163;
 }
-.mini-counts {  
+.mini-counts {
     font-size: 17px;
     font-weight: 300;
     color: #6a737c;
@@ -346,8 +346,8 @@ export default {
     cursor: pointer;
     border: 1px solid #adb3b9;
 }
-.filter-inner a:nth-child(2), 
-.filter-inner a:nth-child(3), 
+.filter-inner a:nth-child(2),
+.filter-inner a:nth-child(3),
 .filter-inner a:nth-child(4),
 .filter-inner a:nth-child(5){
     border-left: none;
@@ -400,7 +400,7 @@ export default {
 .top-questions{
     font-size: 1.7rem !important;
     flex: 1 auto !important;
-   
+
     font-weight: normal;
     color: #242729;;
 }
