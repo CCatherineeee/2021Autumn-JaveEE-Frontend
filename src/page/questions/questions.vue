@@ -11,8 +11,8 @@
     <el-divider></el-divider>
 
     <div v-for="(item,index) in questionList" :key="index">
-      <el-row class='posts'>
-        <el-col span="4">
+      <el-container class='posts'>
+        <el-aside style="width: 58px">
           <div class='stats-container'>
             <div class='stats'>
               <div class='vote'>
@@ -37,37 +37,35 @@
               </div>
             </div>
           </div>
-        </el-col>
-        <el-col span="18">
+        </el-aside>
+        <el-main>
           <div class='summary'>
-            <el-link :underline="false" style="font-size: large" >{{item.title}}</el-link>
+            <el-link :underline="false" style="font-size: large;color: #1e7cf0" @click="skipToQuestion(item.questionId)">{{item.title}}</el-link>
             <br />
             <br />
-            <div v-html="item.description" ></div>
+            <div v-html="formatImag(item.description)"></div>
             <br />
             <el-row :gutter="2">
               <el-col v-for="(tag,idx) in tagList[index]" :key="idx" :span="3">
                 <el-tag>
-                  <el-link :underline="false" style="font-size: small">{{tag.tagName}}</el-link></el-tag>
+                  <el-link :underline="false" style="font-size: small; color: #1e7cf0">{{tag.tagName}}</el-link></el-tag>
               </el-col>
             </el-row>
           </div>
-        </el-col>
-        <el-col >
-          <br />
-          <br />
+        </el-main>
+        <el-aside>
           <div
             class='owner'
             style='backgroundColor: backgroundColor'>
             <div class='user-block fc-black-500'>
               <div class='action-time'>
-                <p>asked {{getMyTime(item.postTime)}}</p>
-                <p>by {{userList[index].userName}}</p>
+                <p>asked {{getMyTime(item.postTime)}} by</p>
+                <el-link style="color: #1e7cf0" :underline="false"> {{userList[index].userName}}</el-link>
               </div>
             </div>
           </div>
-        </el-col>
-      </el-row>
+        </el-aside>
+      </el-container>
     </div>
   </div>
 </template>
@@ -90,11 +88,11 @@ export default {
         if (res.data.code === 200) {
           this.questionList = res.data.data[0]
           this.tagList = res.data.data[1]
-          this.userList =res.data.data[2]
+          this.userList = res.data.data[2]
         }
       }).catch((error) => {
         console.log(error)
-        this.$message('网络错误')
+        this.$message('Net Error')
       })
     },
     skipToAsk () {
@@ -111,6 +109,12 @@ export default {
       var hours = parseInt(diff / 3600) - 24 * days // 小时 60*60 总小时数-过去的小时数=现在的小时数
       var minutes = parseInt(diff % 3600 / 60) // 分钟 -(day*24) 以60秒为一整份 取余 剩下秒数 秒数/60 就是分钟数
       if (days === 0 && hours === 0) { return minutes.toString() + ' minutes ago' } else if (days === 0) { return hours.toString() + ' hours ago' } else { return days.toString() + ' days ago' }
+    },
+    skipToQuestion (id) {
+      this.$router.push({path: '/question', query: {'id': id}})
+    },
+    formatImag (content) {
+      return content.replace(/<img/g, "<img style='max-width:100%;height:auto;'")
     }
 
   },
@@ -155,18 +159,15 @@ export default {
   border-radius: 3px;
 }
 
-.tags-badge {
-  color: #242729;
-  line-height: 18px;
-}
-
 .owner {
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   border-radius: 3px;
+  background-color: #f2f3f3;
   text-align: left;
   vertical-align: top;
   width: 200px;
+  height: 50px;
 }
 .user-block {
   box-sizing: border-box;
@@ -180,35 +181,4 @@ export default {
   white-space: nowrap;
 }
 
-.user-logo {
-  float: left;
-  width: 32px;
-  height: 32px;
-  border-radius: 1px;
-  margin-bottom: 6px;
-}
-.user-link {
-  color: #0077cc;
-  text-decoration: none;
-  cursor: pointer;
-}
-.logo-wrapper {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  overflow: hidden;
-}
-.user-profile {
-  margin-left: 8px;
-  width: calc(100% - 40px);
-  float: left;
-  line-height: 17px;
-  word-wrap: break-word;
-}
-.user-profile-link {
-  color: #0077cc;
-  text-decoration: none;
-  cursor: pointer;
-  font-size: 14px;
-}
 </style>

@@ -69,7 +69,7 @@ export default {
         {
           headers: {
             'Content-Type': 'application/json',
-            'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwMDAxMSwiZXhwIjoxNjM5MzA2NzkxLCJpYXQiOjE2MzkzMDQ5OTF9.0cBMYbLomav4yUs-FDkj9yRItUUm2CMAquri0VkZ2qs'
+            'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwMDAxMSwiZXhwIjoxNjM5MzE4OTQ3LCJpYXQiOjE2MzkzMTcxNDd9.DtTJ5iJQ2xpvHdHB2CxH9QHbiL0DIdf-V1J-6g7Js10'
           }
         }
       ).then((res) => {

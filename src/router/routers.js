@@ -7,6 +7,7 @@ const Users = () => import('../page/Users/users')
 const Search = () => import('../page/search/search')
 const Login = () => import('../page/login/login')
 const askQuestion = () => import('../page/questions/askQuestion')
+const question = () => import('../page/questions/questionDetail')
 // const childBanner = [
 //   {
 //     path: '/',
@@ -84,6 +85,11 @@ const index = [
         component: askQuestion
       },
       {
+        path: '/question',
+        name: 'question',
+        component: question
+      },
+      {
         path: '/questions',
         name: 'Questions',
         component: Questions,
@@ -98,10 +104,10 @@ const index = [
         path: '/search',
         name: 'Search',
         component: Search
-      },
+      }
 
     ]
-  },
+  }
 
 ]
 export default index
