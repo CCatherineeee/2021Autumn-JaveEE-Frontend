@@ -5,7 +5,9 @@
     <section class="content">
       <div class="register-content">
         <div className='register-grid'>
-        <auth-form class="form-container"></auth-form>   
+          <caption/>
+          <sign-up-form class="form-container"></sign-up-form>   
+
         </div>
       </div>
       
@@ -14,11 +16,12 @@
 </template>
 
 <script>
-import AuthForm from '../../components/auth/AuthForm.vue'
+import SignUpForm from '../../components/auth/SignUpForm.vue'
+import Caption from '../../components/auth/Caption.vue'
+
 
 export default {
-  components: { AuthForm },
-  name: 'login.vue',
+  components: { SignUpForm,Caption},
 
   methods:{
     
@@ -86,6 +89,26 @@ export default {
   margin-bottom: 24px;
 }
 
+.auth-page {
+  width: 100%;
+  background-color: #3d3d3d;
+}
+
+.register-content {
+  width: 100vw;
+  background-color: transparent;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90.7vh;
+}
+
+.register-grid  {
+  display: flex;
+  align-items: center;
+  box-sizing: inherit;
+}
 
 @media (max-width: 799px) {
   .register-grid {

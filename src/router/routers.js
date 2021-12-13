@@ -48,6 +48,7 @@ const question = () => import('../page/questions/questionDetail')
 //   }
 // }
 // ]
+const Register=()=>import('../page/login/register.vue')
 
 const index = [
   {
@@ -55,6 +56,11 @@ const index = [
     redirect: '/'
 
   },
+  {
+    path:'/register',
+    component:Register,
+  },
+  
   {
     path: '/login',
     name: 'Login',

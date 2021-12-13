@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 <template>
     <footer class="footer-container">
         <div class="footer-inner">
@@ -48,64 +49,64 @@
 
 <script>
 export default {
-    name: 'users',
-    components:{
-        
-    },
-    data () {
-        return {
-            linkedArr: [
-                {name: 'Blog'},
-                {name: 'Facebook'},
-                {name: 'Twitter'},
-                {name: 'LinkedIn'}
-            ],
-            navArr: [
-                {
-                    title: 'STACK OVERFLOW',
-                    arr: [
-                        {name: 'Questions'},
-                        {name: 'Jobs'},
-                        {name: 'Developer Jobs Directory'},
-                        {name: 'Salary Calculator'},
-                        {name: 'Help'},
-                        {name: 'Mobile'},
-                        {name: 'Disable Responsiveness'}
-                    ]
-                }, {
-                    title: 'PRODUCTS',
-                    arr: [
-                        {name: 'Teams'},
-                        {name: 'Talent'},
-                        {name: 'Engagement'},
-                        {name: 'Enterprise'}
-                    ]
-                }, {
-                    title: 'COMPANY',
-                    arr: [
-                        {name: 'About'},
-                        {name: 'Press'},
-                        {name: 'Work Here'},
-                        {name: 'Legal'},
-                        {name: 'Privacy Policy'},
-                        {name: 'Contact Us'}
-                    ]
-                }, {
-                    title: 'STACK EXCHANGE NETWORK',
-                    arr: [
-                        {name: 'Technology'},
-                        {name: 'Life / Arts'},
-                        {name: 'Culture / Recreation'},
-                        {name: 'Science'},
-                        {name: 'Others'}
-                    ]
-                }
-            ]
+  name: 'users',
+  components: {
+
+  },
+  data () {
+    return {
+      linkedArr: [
+        {name: 'Blog'},
+        {name: 'Facebook'},
+        {name: 'Twitter'},
+        {name: 'LinkedIn'}
+      ],
+      navArr: [
+        {
+          title: 'STACK OVERFLOW',
+          arr: [
+            {name: 'Questions'},
+            {name: 'Jobs'},
+            {name: 'Developer Jobs Directory'},
+            {name: 'Salary Calculator'},
+            {name: 'Help'},
+            {name: 'Mobile'},
+            {name: 'Disable Responsiveness'}
+          ]
+        }, {
+          title: 'PRODUCTS',
+          arr: [
+            {name: 'Teams'},
+            {name: 'Talent'},
+            {name: 'Engagement'},
+            {name: 'Enterprise'}
+          ]
+        }, {
+          title: 'COMPANY',
+          arr: [
+            {name: 'About'},
+            {name: 'Press'},
+            {name: 'Work Here'},
+            {name: 'Legal'},
+            {name: 'Privacy Policy'},
+            {name: 'Contact Us'}
+          ]
+        }, {
+          title: 'STACK EXCHANGE NETWORK',
+          arr: [
+            {name: 'Technology'},
+            {name: 'Life / Arts'},
+            {name: 'Culture / Recreation'},
+            {name: 'Science'},
+            {name: 'Others'}
+          ]
         }
-    },
-    methods: {
-        
+      ]
     }
+  },
+  methods: {
+        
+  }
 }
 </script>
 <style scoped> 
