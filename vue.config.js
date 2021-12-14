@@ -1,4 +1,5 @@
 module.exports = {
+    lintOnSave: false,
     // 配置跨域代理
     devServer: {
         // Paths
