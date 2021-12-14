@@ -5,7 +5,19 @@
     <section class="content">
       <div class="register-content">
         <div className='register-grid'>
-        <auth-form class="form-container"></auth-form>   
+            <el-form>
+                Forgot your account’s password ?
+                Enter your email address and we’ll send you a recovery link.
+
+            <el-form-item label="Email" prop="mailaddr">
+                <el-input v-model="ruleForm.mailaddr"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="sendEmail()">Send recovery email</el-button>
+            </el-form-item>
+
+            </el-form>
         </div>
       </div>
       
@@ -14,15 +26,28 @@
 </template>
 
 <script>
-import AuthForm from '../../components/auth/AuthForm.vue'
 
 export default {
-  components: { AuthForm },
-  name: 'login.vue',
+    data(){
+        return {
+            ruleForm:{
+                mailaddr:'',
+            },
 
-  methods:{
-    
-  }
+            rules:{
+                mailaddr: [
+                    {required: true, message: '请输入邮箱', trigger: 'blur'}
+                ],
+                
+            }
+        }
+    },
+    methods:{
+        sendEmail(){
+            // TODO 发送验证邮件
+            console.log('发送验证邮件')
+        },
+    }
 }
 
 </script>

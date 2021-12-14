@@ -5,17 +5,23 @@
     <section class="content">
 
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="Email" prop="email">
-          <el-input v-model="ruleForm.email"></el-input>
+        <el-form-item label="mailaddr" prop="mailaddr">
+          <el-input v-model="ruleForm.mailaddr"></el-input>
         </el-form-item>
 
         <el-form-item label="Password" prop="password">
             <el-input v-model="ruleForm.password"></el-input>
         </el-form-item>
 
+        <div>
+          忘记密码？
+          <el-button type="text"  @click="forgetPwd()">忘记密码</el-button>
+        </div>
+        
+
         <el-form-item>
-        <el-button type="primary" @click="submitForm()">Log In</el-button>
-    </el-form-item>
+          <el-button type="primary" @click="submitForm()">Log In</el-button>
+        </el-form-item>
 
         <div className='fs-caption license '>
             By clicking "Log in", you agree to our
@@ -32,16 +38,18 @@
 </template>
 
 <script>
+import {login} from '@/api/auth'
+
 export default {
   data(){
     return {
         ruleForm:{
-            email:'',
+            mailaddr:'',
             password:'',
         },
 
         rules:{
-            email: [
+            mailaddr: [
                 {required: true, message: '请输入邮箱', trigger: 'blur'}
             ],
             password:[
@@ -52,14 +60,38 @@ export default {
   },
 
   methods:{
+    forgetPwd(){
+      console.log('修改密码')
+      this.$router.push('/account-recovery')
+    },
+
     submitForm(){
+      console.log("点击提交");
+        login(JSON.stringify(this.ruleForm))
+        .then((res)=>{
+          console.log(res)
+          // 密码错误
+          if(res.data.code===400){
+            console.log('密码错误');
+            //TODO 弹框提醒
+          }
+          else if(res.data.code===404){
+            console.log('用户不存在');
+            //TODO 弹窗提醒
+          }
+          // 成功登陆
+          else{
+            console.log('成功登陆');
+            this.$store.commit('changeLogin',res.data.code);//存储token
+            // TODO 跳转至home界面
+          }
+        })
         this.resetForm();
-                console.log("formName");
 
     },
 
     resetForm(){
-        this.ruleForm.email='';
+        this.ruleForm.mailaddr='';
         this.ruleForm.password='';
         console.log('清空表单');
     }
