@@ -27,7 +27,7 @@
                     <div class='count-text'>views</div>
                   </div>
 
-                  <div class='vote' v-if="questionInfo.answerNum === 0">
+                  <div class='vote' v-if="questionInfo.acceptId === null">
                     <span class='vote-count'>{{questionInfo.answerNum}}</span>
                     <div class='count-text'>answers</div>
                   </div>
@@ -46,7 +46,7 @@
               </div>
             </el-col>
             <el-col>
-              <div v-html="questionInfo.description" ></div>
+              <div v-html="formatImag(questionInfo.description)" ></div>
               <br />
             </el-col>
           </el-row>
@@ -57,7 +57,7 @@
         <div v-for="(item,index) in answerList" :key="index">
           <el-container>
             <el-main>
-              <div v-html="item.description" ></div>
+              <div v-html="formatImag(item.description)" ></div>
             </el-main>
             <el-aside style="background-color: #e4e6e8;border-radius: 10px;height: 80px">
               <el-main >
@@ -149,7 +149,7 @@ export default {
       }), {
         headers: {
           'Content-Type': 'application/json',
-          'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwMDAxMSwiZXhwIjoxNjM5MzIxOTkzLCJpYXQiOjE2MzkzMjAxOTN9.p1IJ54Udr4OljBWqlMoArGbN938xpIgF3ySUvfii3VY'
+          'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwMDAxMSwiZXhwIjoxNjM5Mzg3MTk3LCJpYXQiOjE2MzkzODUzOTd9.HFxreZTmygkmrWdkmkbV6lzvB2UFVCnunJ8BXmU5BLM'
         }
       }).then((res) => {
         if (res.data.code === 200) {
@@ -163,6 +163,9 @@ export default {
         console.log(error)
         this.$message('Net Error')
       })
+    },
+    formatImag (content) {
+      return content.replace(/<img/g, "<img style='max-width:60%;height:auto;'")
     }
   },
   mounted () {

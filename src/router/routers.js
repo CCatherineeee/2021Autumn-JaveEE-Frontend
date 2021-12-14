@@ -8,6 +8,16 @@ const Search = () => import('../page/search/search')
 const Login = () => import('../page/auth/login')
 const askQuestion = () => import('../page/questions/askQuestion')
 const question = () => import('../page/questions/questionDetail')
+const tag = () => import('../page/tags/tagDetail')
+// const childBanner = [
+//   {
+//     path: '/',
+//     name: 'Home',
+//     components: {
+//       childBanner: require('../page/home/home.vue')
+//     }
+//   }
+// ]
 
 const Register=()=>import('../page/auth/register')
 
@@ -56,6 +66,11 @@ const index = [
         path: '/askQuestion',
         name: 'askQuestion',
         component: askQuestion
+      },
+      {
+        path: '/tag',
+        name: 'tag',
+        component: tag
       },
       {
         path: '/question',

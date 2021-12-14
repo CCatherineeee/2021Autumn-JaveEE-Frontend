@@ -20,7 +20,7 @@
                 <div class='count-text'>views</div>
               </div>
 
-              <div class='vote' v-if="item.answerNum === 0">
+              <div class='vote' v-if="item.acceptId === null">
                 <span class='vote-count'>{{item.answerNum}}</span>
                 <div class='count-text'>answers</div>
               </div>
