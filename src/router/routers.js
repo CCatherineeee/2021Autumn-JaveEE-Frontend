@@ -8,6 +8,7 @@ const Search = () => import('../page/search/search')
 const Login = () => import('../page/login/login')
 const askQuestion = () => import('../page/questions/askQuestion')
 const question = () => import('../page/questions/questionDetail')
+const tag = () => import('../page/tags/tagDetail')
 // const childBanner = [
 //   {
 //     path: '/',
@@ -83,6 +84,11 @@ const index = [
         path: '/askQuestion',
         name: 'askQuestion',
         component: askQuestion
+      },
+      {
+        path: '/tag',
+        name: 'tag',
+        component: tag
       },
       {
         path: '/question',
