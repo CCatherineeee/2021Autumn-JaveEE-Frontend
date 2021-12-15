@@ -5,51 +5,12 @@ const Questions = () => import('../page/questions/questions')
 const Tags = () => import('../page/Tags/tags')
 const Users = () => import('../page/Users/users')
 const Search = () => import('../page/search/search')
-const Login = () => import('../page/login/login')
+const Login = () => import('../page/auth/login')
 const askQuestion = () => import('../page/questions/askQuestion')
 const question = () => import('../page/questions/questionDetail')
 const tag = () => import('../page/tags/tagDetail')
-// const childBanner = [
-//   {
-//     path: '/',
-//     name: 'Home',
-//     components: {
-//       childBanner: require('../page/home/home.vue')
-//     }
-//   }
-// ]
 
-// const main = [
-// {
-//   path: '/users',
-//   name: 'Users',
-//   component: {
-//     main: require('../page/users/users.vue')
-//   }
-// },
-// {
-//   path: '/tags',
-//   name: 'Tags',
-//   component: {
-//     main: require('../page/tags/tags.vue')
-//   }
-// },
-// {
-//   path: '/questions',
-//   name: 'Questions',
-//   component: {
-//     main: require('../page/questions/questions.vue')
-//   }
-// },
-// {
-//   path: '/jobs',
-//   name: 'Jobs',
-//   component: {
-//     main: require('../page/jobs/jobs.vue')
-//   }
-// }
-// ]
-const Register = () => import('../page/login/register.vue')
+const Register = () => import('../page/auth/register')
 
 const index = [
   {
@@ -67,6 +28,12 @@ const index = [
     name: 'Login',
     component: Login
   },
+
+  {
+    path: '/account-recovery',
+    component: () => import('../page/auth/resetPwd')
+  },
+
   {
     path: '/',
     component: HomeIndex,

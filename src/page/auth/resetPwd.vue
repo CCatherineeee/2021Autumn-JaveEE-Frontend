@@ -1,28 +1,53 @@
 <template>
 <div>
-  <div style="width: 100%;height: 100%;" class="banner-view">
+  <div style="width: 100%;height: 100%;" class="banner-view">  
   </div>
     <section class="content">
       <div class="register-content">
         <div className='register-grid'>
-        <auth-form class="form-container"></auth-form>
+            <el-form>
+                Forgot your account’s password ?
+                Enter your email address and we’ll send you a recovery link.
+
+            <el-form-item label="Email" prop="mailaddr">
+                <el-input v-model="ruleForm.mailaddr"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="sendEmail()">Send recovery email</el-button>
+            </el-form-item>
+
+            </el-form>
         </div>
       </div>
-
+      
     </section>
   </div>
 </template>
 
 <script>
-import AuthForm from '../../components/auth/AuthForm.vue'
 
 export default {
-  components: { AuthForm },
-  name: 'login.vue',
+    data(){
+        return {
+            ruleForm:{
+                mailaddr:'',
+            },
 
-  methods: {
-
-  }
+            rules:{
+                mailaddr: [
+                    {required: true, message: '请输入邮箱', trigger: 'blur'}
+                ],
+                
+            }
+        }
+    },
+    methods:{
+        sendEmail(){
+            // TODO 发送验证邮件
+            console.log('发送验证邮件')
+        },
+    }
 }
 
 </script>
@@ -53,6 +78,7 @@ export default {
       margin: 5px 0 3px 0;
       width: 100%;
     }
+  
 
   .form-container .fs-caption {
     color:#6a737c;
@@ -66,6 +92,7 @@ export default {
     font-weight: 600;
   }
 
+
 .icon-holder {
   text-align: center;
   margin-bottom: 15px;
@@ -76,12 +103,14 @@ export default {
     height: 45px;
   }
 
+
 .redirects {
   padding: 16px 16px 0 16px;
   text-align: center;
   font-size: 13px;
   margin-bottom: 24px;
 }
+
 
 @media (max-width: 799px) {
   .register-grid {
