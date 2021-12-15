@@ -1,16 +1,16 @@
 <template>
 <div>
-  <div style="width: 100%;height: 100%;" class="banner-view">  
+  <div style="width: 100%;height: 100%;" class="banner-view">
   </div>
     <section class="content">
       <div class="register-content">
-        <div className='register-grid'>
+        <div class='register-grid'>
           <caption/>
-          <sign-up-form class="form-container"></sign-up-form>   
+          <sign-up-form class="form-container"></sign-up-form>
 
         </div>
       </div>
-      
+
     </section>
   </div>
 </template>
@@ -19,12 +19,12 @@
 import SignUpForm from '../../components/auth/SignUpForm.vue'
 import Caption from '../../components/auth/Caption.vue'
 
-
 export default {
-  components: { SignUpForm,Caption},
+  // eslint-disable-next-line standard/object-curly-even-spacing
+  components: { SignUpForm, Caption},
 
-  methods:{
-    
+  methods: {
+
   }
 }
 
@@ -56,7 +56,6 @@ export default {
       margin: 5px 0 3px 0;
       width: 100%;
     }
-  
 
   .form-container .fs-caption {
     color:#6a737c;
@@ -70,7 +69,6 @@ export default {
     font-weight: 600;
   }
 
-
 .icon-holder {
   text-align: center;
   margin-bottom: 15px;
@@ -80,7 +78,6 @@ export default {
     width: 45px;
     height: 45px;
   }
-
 
 .redirects {
   padding: 16px 16px 0 16px;

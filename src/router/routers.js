@@ -49,7 +49,7 @@ const tag = () => import('../page/tags/tagDetail')
 //   }
 // }
 // ]
-const Register=()=>import('../page/login/register.vue')
+const Register = () => import('../page/login/register.vue')
 
 const index = [
   {
@@ -58,10 +58,10 @@ const index = [
 
   },
   {
-    path:'/register',
-    component:Register,
+    path: '/register',
+    component: Register
   },
-  
+
   {
     path: '/login',
     name: 'Login',

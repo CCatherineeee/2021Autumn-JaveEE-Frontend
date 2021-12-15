@@ -4,6 +4,7 @@
   <br />
   <p>{{tagInfo.tagDescription}}</p>
   <br />
+  <p>{{tagInfo.tagView}} views</p>
   <el-row>
     <el-col span="18"><p>{{questionList.length}} questions</p></el-col>
     <el-col span="6"><el-button type="primary"  @click="skipToAsk()">Ask Question</el-button></el-col>
@@ -112,7 +113,12 @@ export default {
   },
   mounted () {
     this.tagId = this.$route.query.id
-    this.getTagInfo()
+    var params = new URLSearchParams()
+    params.append('id', this.tagId)
+    this.$axios.post('/api/tag/addTagViews', params).then((res) => {
+      console.log(res)
+      this.getTagInfo()
+    })
   }
 }
 </script>

@@ -9,6 +9,7 @@ import VueRouter from 'vue-router'
 import configRouter from './router/routers'
 import axios from 'axios'
 
+
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 

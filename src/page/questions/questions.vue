@@ -95,9 +95,6 @@ export default {
         this.$message('Net Error')
       })
     },
-    skipToAsk () {
-      this.$router.push({name: 'askQuestion'})
-    },
     getMyTime (time) {
       var d = new Date(time)
       // eslint-disable-next-line camelcase
@@ -109,9 +106,6 @@ export default {
       var hours = parseInt(diff / 3600) - 24 * days // 小时 60*60 总小时数-过去的小时数=现在的小时数
       var minutes = parseInt(diff % 3600 / 60) // 分钟 -(day*24) 以60秒为一整份 取余 剩下秒数 秒数/60 就是分钟数
       if (days === 0 && hours === 0) { return minutes.toString() + ' minutes ago' } else if (days === 0) { return hours.toString() + ' hours ago' } else { return days.toString() + ' days ago' }
-    },
-    skipToQuestion (id) {
-      this.$router.push({path: '/question', query: {'id': id}})
     },
     formatImag (content) {
       return content.replace(/<img/g, "<img style='max-width:100%;height:auto;'")

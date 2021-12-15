@@ -34,7 +34,7 @@
                 <el-input v-model="form.tagnames" placeholder="e.g. (ajax django string)"></el-input>
               </el-form-item>
             </el-form>
-            <el-button @click="postQuestion">Post Your Qustion</el-button>
+            <el-button @click="postQuestion">Post Your Question</el-button>
           </el-main>
         </el-container>
     </el-main>
@@ -69,17 +69,20 @@ export default {
         {
           headers: {
             'Content-Type': 'application/json',
-            'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwMDAxMSwiZXhwIjoxNjM5Mzg3MTk3LCJpYXQiOjE2MzkzODUzOTd9.HFxreZTmygkmrWdkmkbV6lzvB2UFVCnunJ8BXmU5BLM'
+            'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMDAwMTEiLCJleHAiOjE2Mzk1Mzk2MTYsImlhdCI6MTYzOTUzNzgxNn0.qh1p3EFbUYzllqBaKW4tAz2n8jzbLvJSTy_PXPcrM24'
           }
         }
       ).then((res) => {
+        console.log(res)
         if (res.data.code === 200) {
           this.$message('Posted Successfully！')
           this.form.description = ''
           this.form.tagnames = ''
           this.form.title = ''
-        } else if (res.data.code === 500 & res.data.message === 'not login') {
+        } else if (res.data.code === 401) {
           this.$message('please login first！')
+        } else {
+          this.$message('Net Error!')
         }
       })
     }
