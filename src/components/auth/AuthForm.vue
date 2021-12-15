@@ -1,6 +1,6 @@
 <template>
 <div>
- <div style="width: 100%;height: 100%;" class="banner-view">  
+ <div style="width: 100%;height: 100%;" class="banner-view">
   </div>
     <section class="content">
 
@@ -17,7 +17,6 @@
           忘记密码？
           <el-button type="text"  @click="forgetPwd()">忘记密码</el-button>
         </div>
-        
 
         <el-form-item>
           <el-button type="primary" @click="submitForm()">Log In</el-button>
@@ -31,8 +30,7 @@
 
         </div>
       </el-form>
-   
-      
+
     </section>
   </div>
 </template>
@@ -41,64 +39,62 @@
 import {login} from '@/api/auth'
 
 export default {
-  data(){
+  data () {
     return {
-        ruleForm:{
-            mailaddr:'',
-            password:'',
-        },
+      ruleForm: {
+        mailaddr: '',
+        password: ''
+      },
 
-        rules:{
-            mailaddr: [
-                {required: true, message: '请输入邮箱', trigger: 'blur'}
-            ],
-            password:[
-                {required: true, message: '请输入密码', trigger: 'blur'}
-            ],
-        }
+      rules: {
+        mailaddr: [
+          {required: true, message: '请输入邮箱', trigger: 'blur'}
+        ],
+        password: [
+          {required: true, message: '请输入密码', trigger: 'blur'}
+        ]
+      }
     }
   },
 
-  methods:{
-    forgetPwd(){
+  methods: {
+    forgetPwd () {
       console.log('修改密码')
       this.$router.push('/account-recovery')
     },
 
-    submitForm(){
-      console.log("点击提交");
-        login(JSON.stringify(this.ruleForm))
-        .then((res)=>{
+    submitForm () {
+      console.log('点击提交')
+      login(JSON.stringify(this.ruleForm))
+        .then((res) => {
           console.log(res)
           // 密码错误
-          if(res.data.code===400){
-            console.log('密码错误');
-            //TODO 弹框提醒
-          }
-          else if(res.data.code===404){
-            console.log('用户不存在');
-            //TODO 弹窗提醒
+          if (res.data.code === 400) {
+            console.log('密码错误')
+            // TODO 弹框提醒
+          } else if (res.data.code === 404) {
+            console.log('用户不存在')
+            // TODO 弹窗提醒
           }
           // 成功登陆
-          else{
-            console.log('成功登陆');
-            this.$store.commit('changeLogin',res.data.code);//存储token
+          else {
+            console.log('成功登陆')
+            console.log(res.data.data.token)
+            this.$store.commit('changeLogin', res.data.data.token)// 存储token
             // TODO 跳转至home界面
           }
         })
-        this.resetForm();
-
+      this.resetForm()
     },
 
-    resetForm(){
-        this.ruleForm.mailaddr='';
-        this.ruleForm.password='';
-        console.log('清空表单');
+    resetForm () {
+      this.ruleForm.mailaddr = ''
+      this.ruleForm.password = ''
+      console.log('清空表单')
     }
-        
-    }
-  }
 
+  }
+}
 
 </script>
 
@@ -114,7 +110,6 @@ margin-top: 32px;
 .fs-caption  .form-label {
 font-weight: 600;
 }
-
 
 .form-container  {
   width: 320px;
@@ -137,7 +132,6 @@ font-weight: 600;
       margin: 5px 0 3px 0;
       width: 100%;
     }
-  
 
   .form-container .fs-caption {
     color:#6a737c;
@@ -151,7 +145,6 @@ font-weight: 600;
     font-weight: 600;
   }
 
-
 .icon-holder {
   text-align: center;
   margin-bottom: 15px;
@@ -161,7 +154,6 @@ font-weight: 600;
     width: 45px;
     height: 45px;
   }
-
 
 .redirects {
   padding: 16px 16px 0 16px;

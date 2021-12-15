@@ -148,8 +148,7 @@ export default {
         questionId: this.question_id
       }), {
         headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwMDAxMSwiZXhwIjoxNjM5Mzg3MTk3LCJpYXQiOjE2MzkzODUzOTd9.HFxreZTmygkmrWdkmkbV6lzvB2UFVCnunJ8BXmU5BLM'
+          'Content-Type': 'application/json'
         }
       }).then((res) => {
         if (res.data.code === 200) {
