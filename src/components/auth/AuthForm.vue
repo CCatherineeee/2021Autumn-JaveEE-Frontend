@@ -80,7 +80,7 @@ export default {
           else {
             console.log('成功登陆')
             console.log(res.data.data.token)
-            this.$store.commit('changeLogin', res.data.data.token)// 存储token
+            this.$store.commit('changeLogin', res.data.data.token, res.data.data.id)// 存储token
             // TODO 跳转至home界面
           }
         })

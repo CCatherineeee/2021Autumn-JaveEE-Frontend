@@ -20,7 +20,6 @@ const router = new VueRouter({
   routes: configRouter
 })
 
-axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
 
 /* eslint-disable no-new */
 new Vue({

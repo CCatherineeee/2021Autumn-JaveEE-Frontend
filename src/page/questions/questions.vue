@@ -47,7 +47,7 @@
             <br />
             <el-row :gutter="2">
               <el-col v-for="(tag,idx) in tagList[index]" :key="idx" :span="3">
-                <el-tag>
+                <el-tag @click="skipToTag(tag.tagId)">
                   <el-link :underline="false" style="font-size: small; color: #1e7cf0">{{tag.tagName}}</el-link></el-tag>
               </el-col>
             </el-row>
@@ -109,6 +109,15 @@ export default {
     },
     formatImag (content) {
       return content.replace(/<img/g, "<img style='max-width:100%;height:auto;'")
+    },
+    skipToQuestion (id) {
+      this.$router.push({path: '/question', query: {'id': id}})
+    },
+    skipToTag (id) {
+      this.$router.push({path: '/tag', query: {id: id}})
+    },
+    skipToAsk () {
+      this.$router.push({name: 'askQuestion'})
     }
 
   },

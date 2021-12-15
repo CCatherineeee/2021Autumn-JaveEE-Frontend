@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container v-if="isExsit === true">
-      <el-header>
+      <el-header style="height: 100px">
         <div class='post-form-headline'>
           <el-row>
             <el-col span="13"><h2>{{questionInfo.title}}</h2></el-col>
@@ -12,7 +12,7 @@
             <el-col span="4"><el-button type="primary">Follow Question</el-button></el-col>
           </el-row>
         </div>
-        <p>asked {{getMyTime(questionInfo.postTime)}} by <el-link style="color: #1e7cf0" :underline="false"> {{questionInfo.userName}}</el-link>
+        <p>asked {{getMyTime(questionInfo.postTime)}} by <el-link style="color: #1e7cf0" :underline="false"> {{questionInfo.user.userName}}</el-link>
         </p>
       </el-header>
       <el-divider></el-divider>
@@ -57,7 +57,12 @@
         <div v-for="(item,index) in answerList" :key="index">
           <el-container>
             <el-main>
+              <el-tag v-if="item.answerId === questionInfo.acceptId">[ this answer is accepted ]
+              </el-tag>
+              <br />
+              <br />
               <div v-html="formatImag(item.description)" ></div>
+              <el-button type="text" @click="acceptAnswer(item.answerId)">accept this answer</el-button>
             </el-main>
             <el-aside style="background-color: #e4e6e8;border-radius: 10px;height: 80px">
               <el-main >
@@ -110,11 +115,12 @@ export default {
       isExsit: null,
       form: {
         description: ''
-      }
+      },
+      hasAuth: false
     }
   },
   methods: {
-    getQuestionDeatil () {
+    async getQuestionDeatil () {
       this.$axios.get('/api/question/getQuestion', {
         params: {
           id: this.question_id
@@ -125,6 +131,7 @@ export default {
           this.tagList = res.data.data[1]
           this.answerList = res.data.data[2]
           this.isExsit = true
+          if (this.questionInfo.userId === localStorage.getItem('id')) { this.hasAuth = true }
         } else {
           this.isExsit = false
         }
@@ -148,7 +155,8 @@ export default {
         questionId: this.question_id
       }), {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-auth-token': localStorage.getItem('token')
         }
       }).then((res) => {
         if (res.data.code === 200) {
@@ -165,18 +173,37 @@ export default {
     },
     formatImag (content) {
       return content.replace(/<img/g, "<img style='max-width:60%;height:auto;'")
+    },
+    async addQuestionView () {
+      var params = new URLSearchParams()
+      params.append('id', this.question_id)
+      this.$axios.post('/api/question/addQuestionViews', params).then((res) => {
+      }).catch((error) => {
+        console.log(error)
+        this.$message('Net Error')
+      })
+    },
+    acceptAnswer (id) {
+      let params = new URLSearchParams()
+      params.append('questionId', this.question_id)
+      params.append('answerId', id)
+      this.$axios.post('/api/question/acceptAnswer', params).then((res) => {
+        console.log(res)
+        if (res.data.code === 200) {
+          this.$message('Accept Successfully')
+        } else {
+          this.$message('Net Error')
+        }
+      }).catch((error) => {
+        console.log(error)
+        this.$message('Net Error')
+      })
     }
   },
-  mounted () {
+  async mounted () {
     this.question_id = this.$route.query.id
-    var params = new URLSearchParams()
-    params.append('id', this.question_id)
-    this.$axios.post('/api/question/addQuestionViews', params).then((res) => {
-      this.getQuestionDeatil()
-    }).catch((error) => {
-      console.log(error)
-      this.$message('Net Error')
-    })
+    await this.addQuestionView()
+    await this.getQuestionDeatil()
   }
 }
 </script>

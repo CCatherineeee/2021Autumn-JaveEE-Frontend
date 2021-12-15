@@ -68,7 +68,8 @@ export default {
       this.$axios.post('/api/question/addQuestion', JSON.stringify(this.form),
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-auth-token': localStorage.getItem('token')
           }
         }
       ).then((res) => {

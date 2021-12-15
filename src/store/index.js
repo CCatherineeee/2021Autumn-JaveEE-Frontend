@@ -1,20 +1,23 @@
 
 import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     // 存储token
-    token: localStorage.getItem('token') ? localStorage.getItem('token') : ''
-
+    token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
+    id: localStorage.getItem('id') ? localStorage.getItem('id') : ''
   },
   mutations: {
     // 修改token，并把token存入localStorage
-    changeLogin (state, token) {
+    changeLogin (state, token, id) {
       state.token = token
       localStorage.setItem('token', token)
+      state.id = id
+      localStorage.setItem('id', id)
+      // axios.defaults.headers.common['x-auth-token'] = token
     },
     rememberLogin (state, user) {
       /*
