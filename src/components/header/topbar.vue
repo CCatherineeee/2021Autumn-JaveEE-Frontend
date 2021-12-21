@@ -58,7 +58,7 @@
             </li>
             <li class="-ctas">
                 <a href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
-                <a href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow">Sign Up</a>
+                <a href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
 
             </li>
         </ul>
@@ -112,6 +112,9 @@ export default {
         },
         goLogin () {
           publicModule.goArouter(this, '/login');
+        },
+        goSignUp(){
+            publicModule.goArouter(this, '/register');
         },
         changeColor (e) {
             // console.log(e)

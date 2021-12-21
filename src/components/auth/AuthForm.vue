@@ -60,7 +60,7 @@ export default {
   methods: {
     forgetPwd () {
       console.log('修改密码')
-      this.$router.push('/account-recovery')
+      this.$router.push('/api/users/account-recovery/change-pwd')
     },
 
     submitForm () {
@@ -71,17 +71,26 @@ export default {
           // 密码错误
           if (res.data.code === 400) {
             console.log('密码错误')
-            // TODO 弹框提醒
+            this.$message({
+              message:"密码错误！",
+              type:"warning"
+            });
+            this.ruleForm.password="";
+
           } else if (res.data.code === 404) {
             console.log('用户不存在')
-            // TODO 弹窗提醒
+            this.$message({
+              message:"用户不存在！",
+              type:"warning"
+            });
+            this.resetForm();
           }
           // 成功登陆
           else {
             console.log('成功登陆')
             console.log(res.data.data.token)
             this.$store.commit('changeLogin', res.data.data.token, res.data.data.id)// 存储token
-            // TODO 跳转至home界面
+            this.$router.push("/");
           }
         })
       this.resetForm()

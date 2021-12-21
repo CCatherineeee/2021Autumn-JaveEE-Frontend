@@ -3,9 +3,7 @@ import request from '@/util/request'
 
 //  登陆
 export function login(data) {
-    console.log('data',data)
-let param = new URLSearchParams(data)
-console.log('param',param)
+
 return request({
     url: '/api/user/login',
     method: 'post',
@@ -16,22 +14,37 @@ return request({
 
 // 注册
 export function register(data) {
-    let param = new URLSearchParams(data)
     
     return request({
-        url: '/register',
+        url: '/api/register',
         method: 'post',
-        data:param
+        data:data
     })
     }
 
 // 修改密码
-export function resetPws(data) {
-    let param = new URLSearchParams(data)
-
+export function resetPwd(data) {
     return request({
         url: '/api/users/resetPwd',
         method: 'post',
-        data:param
+        data:data
+    })
+}
+
+// 请求发送邮件
+export function reqSendMail(data){
+    return request({
+        url: '/api/users/reqSendLink',
+        method: 'get',
+        params:data
+    })
+}
+
+// 检查邮件连接是否有效
+export function checkURL(data){
+    return request({
+        url: '/api/users/recover',
+        method: 'get',
+        params:data
     })
 }

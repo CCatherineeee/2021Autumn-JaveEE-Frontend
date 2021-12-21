@@ -3,7 +3,7 @@ const Home = () => import('@/page/home/home')
 const Jobs = () => import('../page/jobs/jobs')
 const Questions = () => import('../page/questions/questions')
 const Tags = () => import('../page/Tags/tags')
-const Users = () => import('../page/Users/users')
+const Users = () => import('../page/users/users')
 const Search = () => import('../page/search/search')
 const Login = () => import('../page/auth/login')
 const askQuestion = () => import('../page/questions/askQuestion')
@@ -30,8 +30,12 @@ const index = [
   },
 
   {
-    path: '/account-recovery',
-    component: () => import('../page/auth/resetPwd')
+    path: '/api/users/account-recovery/reset-pwd',
+    component: () => import('../page/auth/changePwd')
+  },
+  {
+    path: '/api/users/account-recovery/change-pwd',
+    component: () => import('../page/auth/reqSendMail')
   },
 
   {
@@ -46,7 +50,7 @@ const index = [
       {
         path: '/users',
         name: 'Users',
-        component: Users
+        component: ()=>import('../page/auth/changePwd')
       },
       {
         path: '/tags',

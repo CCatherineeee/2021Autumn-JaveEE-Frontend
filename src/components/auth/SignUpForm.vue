@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import {register} from '@/api/auth'
 export default {
   data(){
     return {
@@ -61,9 +62,31 @@ export default {
 
   methods:{
     submitForm(){
-        this.resetForm();
-                console.log("formName");
+      //TODO 检查email合法性
+      //TODO 检查密码复杂性
 
+      register(JSON.stringify(this.ruleForm))
+      .then((res)=>{
+        if(res.data.code==402){
+          this.$message({
+            message:'该邮箱用户已存在！',
+            type:'warning'
+          })
+          this.resetForm();
+        }else if(res.data.code==500){
+          this.$message({
+            message:'内部错误',
+            type:'warning'
+          })
+          this.resetForm();
+        }
+        else{ // 成功注册
+          this.resetForm();
+          this.$router.push('/login');
+        }
+
+      })
+        
     },
 
     resetForm(){

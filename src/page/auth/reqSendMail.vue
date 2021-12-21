@@ -5,7 +5,7 @@
     <section class="content">
       <div class="register-content">
         <div className='register-grid'>
-            <el-form>
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 Forgot your account’s password ?
                 Enter your email address and we’ll send you a recovery link.
 
@@ -26,28 +26,49 @@
 </template>
 
 <script>
+import { reqSendMail } from "@/api/auth";
 
-export default {
-  data () {
-    return {
-      ruleForm: {
-        mailaddr: ''
-      },
+export default { 
 
-      rules: {
-        mailaddr: [
-          {required: true, message: '请输入邮箱', trigger: 'blur'}
-        ]
+    data(){
+        return {
+            ruleForm:{
+                mailaddr:'',
+            },
 
-      }
+            rules:{
+                mailaddr: [
+                    {required: true, message: '请输入邮箱', trigger: 'blur'}
+                ],
+                
+            }
+        }
+    },
+    methods:{
+        sendEmail(){
+          console.log(this.ruleForm)
+            reqSendMail(this.ruleForm)
+            .then((res)=>{
+              if(res.data.code==404){
+                this.$message({
+                  message:'用户不存在',
+                  type:'error'
+                })
+                this.ruleForm.mailaddr='';
+              }else if(res.data.code==500){
+                this.$message({
+                  message:'操作过于频繁，请稍后再试',
+                  type:'error'
+                })
+              }else{
+                this.mailaddr='';
+                // TODO 添加发送后的界面
+              }
+            });
+            
+        },
     }
-  },
-  methods: {
-    sendEmail () {
-      // TODO 发送验证邮件
-      console.log('发送验证邮件')
-    }
-  }
+  
 }
 
 </script>
