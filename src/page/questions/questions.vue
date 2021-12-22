@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="jobs-container">
+    <div>
       <el-row>
         <el-col :span="18"><h1>All Questions</h1></el-col>
         <el-col :span="6"><el-button type="primary"  @click="skipToAsk()">Ask Question</el-button></el-col>
@@ -39,7 +39,7 @@
           </div>
         </el-aside>
         <el-main>
-          <div class='summary'>
+          <div >
             <el-link :underline="false" style="font-size: large;color: #1e7cf0" @click="skipToQuestion(item.questionId)">{{item.title}}</el-link>
             <br />
             <br />

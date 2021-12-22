@@ -83,15 +83,17 @@ export default {
               message:"用户不存在！",
               type:"warning"
             });
-            this.resetForm();
           }
           // 成功登陆
           else {
             console.log('成功登陆')
             console.log(res.data.data.token)
-            this.$store.commit('changeLogin', res.data.data.token, res.data.data.id)// 存储token
+            console.log(res.data.data.id)
+            this.$store.commit('changeLogin', res.data.data.token)// 存储token
+            localStorage.setItem("id",res.data.data.id)
             this.$router.push("/");
           }
+          this.resetForm();
         })
       this.resetForm()
     },

@@ -1,8 +1,8 @@
 <template>
     <div ref="searchContainer" class="search-container">
         <div class="mb24 search-box">
-            <div v-if="has_q" id="headline">Search Results</div>
-            <div v-else id="headline">Search</div>
+            <div v-if="has_q" >Search Results</div>
+            <div v-else >Search</div>
             <div class="ask-questions">
                 <div class="advanced">
                     <a href="#" class="js-advanced-tips-toggle">Advanced Search Tips</a>
@@ -20,7 +20,7 @@
             <input v-model="keyWords" name="q" class="s-input" type="text" maxlength="140" size="80">
             <button @click="getResults(keyWords, 'current')" class="search-btn">search</button>
         </div>
-       
+
         <!---rearch-results-->
         <q-results v-if="has_q" v-on:filter-by="filterBy" ref="Results" :q="keyWords" :results="resultsObj" :has_results="hasResults"></q-results>
 
@@ -42,86 +42,33 @@ export default {
         return {
             hasValue: false,
             keyWords: '',
-            prefix: 'http://api.stackexchange.com/2.2/',
             has_q: false,
             hasResults: false,
             words: '',
             resultsObj: {}
         }
     },
-    mounted () {
-        console.log(this.$route.query.q)
-        this.getResults(this.$route.query.q)
-    },
-    destroyed () {
-        bus.$emit('clear-search');
-    },
-    created () {
-        let that = this
-        bus.$on('message-search', function(key) {
-            console.log(key)
-            that.getResults(key, 'topbar');
-        });
-    },
     methods: {
-        filterBy (value) {
-            console.log(value)
-            this.getRsList(this.keyWords, value);
-        },
-        getResults (key, from) {
-            console.log(key, from)
-            this.keyWords = key;
-            this.words = key;
-            if (key !== '') {
-                this.has_q = true;
-                if (from === 'current') {
-                    this.$router.push({ path: '/search?q=' + key})
-                    bus.$emit('message-topbar', key);
-                }
-                this.getRsList(key, 'relevance');
-            } else {
-                this.has_q = false;
-                bus.$emit('clear-search');
-                this.$router.push({ path: '/search?q='})
-            }
-        },
-        getRsList (key, sortVal) {
-            let that = this;
-            axios.get(this.prefix + 'search/advanced', {
-                params: {
-                    page: 1,
-                    pagesize: 10,
-                    q: key,
-                    filter: '!9Z(-wwYGT',
-                    order: 'desc',
-                    sort: sortVal,
-                    site: 'stackoverflow'
-                }
+        getRsList () {
+          var params = new URLSearchParams()
+          params.append('keywords', this.$route.query.searchCode)
+          params.append('page', 1)
+            this.$axios.post("/api/api/question/search" , params,{
+              headers:{
+                "x-auth-token":localStorage.getItem('token')
+              }
             })
             .then(function (res) {
-                that.resultsObj = res.data;
-                console.log(res.data.items.length)
-                if (res.data.items.length > 0) {
-                    that.hasResults = true;
-                } else {
-                    that.hasResults = false;
-                }
+                console.log(res)
             })
             .catch(function (error) {
                 console.log(error);
             })
         },
-        getSearchValue (to, from) {
-            // console.log('welcome to search')
-            // if (this.$route.query.q !== '') {
-            //     this.keyWords = this.$route.query.q;
-            //     this.hasValue = true;
-            // } else {
-            //     this.hasValue = false;
-            // }
-            // console.log(this.keyWords)
-        }
-    }
+    },
+  mounted () {
+    this.getRsList()
+  },
 }
 </script>
 <style scoped>
@@ -198,7 +145,7 @@ export default {
     padding-left: 8px;
     display: flex;
     align-items: center;
-} 
+}
 .advanced a {
     color: #07C;
     text-decoration: none;

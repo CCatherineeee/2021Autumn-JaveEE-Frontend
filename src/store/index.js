@@ -8,15 +8,15 @@ export default new Vuex.Store({
   state: {
     // 存储token
     token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
-    id: localStorage.getItem('id') ? localStorage.getItem('id') : ''
+    userid: localStorage.getItem('userid') ? localStorage.getItem('userid') : ''
   },
   mutations: {
     // 修改token，并把token存入localStorage
     changeLogin (state, token, id) {
       state.token = token
       localStorage.setItem('token', token)
-      state.id = id
-      localStorage.setItem('id', id)
+      state.userid = id
+      localStorage.setItem('userid', id)
       // axios.defaults.headers.common['x-auth-token'] = token
     },
     rememberLogin (state, user) {

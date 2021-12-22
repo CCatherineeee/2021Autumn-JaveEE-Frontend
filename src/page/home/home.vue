@@ -3,97 +3,46 @@
         <div class="mainbar">
             <div class="grid">
                 <h1 class="top-questions">
-                    Top Questions
+                    Hot Questions
                 </h1>
                  <div class="ask-question">
                      <button @click="skipToAsk()">Ask Question</button>
                  </div>
             </div>
-            <div class="filter-grid">
-                <div class="empty"></div>
-                <div class="filter">
-                    <div class="filter-inner">
-                        <a
-                        v-for="(item, index) in filterArr"
-                        :class="{active: item.isSelected}"
-                        @click="selectChannel(item, index)"
-                        :key="index"
-                        href="javascript:void(0)">
-                            {{item.name}}
-                        </a>
+          <div v-for="(item,index) in questionList" :key="index">
+            <el-container class='posts'>
+              <el-aside style="width: 80px">
+                <div class='stats-container'>
+                  <div class='stats'>
+                    <div class='vote'>
+                      <span class='vote-count'>{{item.view}}</span>
+                      <div class='count-text'>views</div>
                     </div>
-                </div>
-            </div>
-            <div class="qlist">
-                <div class="qlist-inner">
-                    <div v-for="(item, index) in questions" :key="index" class="question-summary">
-                        <div class="interaction">
-                            <div class="votes">
-                                <div class="mini-counts">{{item.score}}</div>
-                                <p>votes</p>
-                            </div>
-                            <div
-                            :class="{answered: item.answer_count > 0 ? true : false }"
-                            class="answers"
-                            >
-                                <div class="mini-counts">{{item.answer_count}}</div>
-                                <p>answers</p>
-                            </div>
-                            <div class="view">
-                                <div class="mini-counts">{{item.view_count}}</div>
-                                <p>view</p>
-                            </div>
-                        </div>
-                        <div class="summary">
-                            <h3>
-                                <a class="description" href="javascript;void(0)">
-                                    {{item.title}}
-                                </a>
-                            </h3>
-                            <div class="tags">
-                                <a
-                                v-for="(tag, tagIndex) in item.tags"
-                                href="javascript:void(0)"
-                                :key="tagIndex"
-                                >{{tag}}</a>
-                            </div>
-                            <div class="started">
-                                <a class="started-link" href="javascript:void(0)">
-                                    <span v-if="item.answer_count > 0">
-                                        <span v-if="item.last_activity_date > item.last_edit_date">
-                                            answered
-                                        </span>
-                                        <span v-else>
-                                            modified
-                                        </span>
-                                    </span>
-                                    <span v-else>asked</span>
-                                    <span class="relativetime">
-                                        <span v-if="item.creation_date && (!item.last_activity_date && !item.last_edit_date)">
-                                            {{calculateGap(item.creation_date)}}
-                                        </span>
-                                        <span v-if="item.creation_date && (item.last_activity_date && !item.last_edit_date)">
-                                            {{calculateGap(item.last_activity_date)}}
-                                        </span>
-                                        <span v-if="item.creation_date && (!item.last_activity_date && item.last_edit_date)">
-                                            {{calculateGap(item.last_edit_date)}}
-                                        </span>
-                                        <span v-if="item.creation_date && (item.last_activity_date && item.last_edit_date)">
-                                            {{calculateGap(item.last_activity_date)}}
-                                        </span>
-                                        ago
-                                    </span>
-                                </a>
-                                <a class="uname" href="javascript:void(0)">{{item.owner.display_name}}</a>
-                                <span class="reputation-score" title="reputation score">{{item.owner.reputation}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="sidebar">
 
+                    <div class='vote' v-if="item.acceptId === null">
+                      <span class='vote-count'>{{item.answerNum}}</span>
+                      <div class='count-text'>answers</div>
+                    </div>
+
+                    <div class='vote answer' v-else>
+                      <span class='vote-count fc-green-500'>{{item.answerNum}}</span>
+                      <div class='count-text'>answers</div>
+                    </div>
+
+                  </div>
+                </div>
+              </el-aside>
+              <el-main>
+                <div class='summary'>
+                  <el-link :underline="false" style="font-size: large;color: #1e7cf0" @click="skipToQuestion(item.questionId)">{{item.title}}</el-link>
+                  <br />
+                  <br />
+                  <div v-html="formatImag(item.description)"></div>
+                  <br />
+                </div>
+              </el-main>
+            </el-container>
+          </div>
         </div>
     </div>
 </template>
@@ -112,38 +61,9 @@ export default {
   },
   data () {
     return {
-      isSelected: false,
-      filterArr: [
-        {
-          name: 'interesting',
-          isSelected: true
-        },
-        {
-          name: 'featured',
-          isSelected: false
-        },
-        {
-          name: 'hot',
-          isSelected: false
-        },
-        {
-          name: 'week',
-          isSelected: false
-        },
-        {
-          name: 'month',
-          isSelected: false
-        }
-      ],
-      prefix: 'http://api.stackexchange.com/2.2/',
-      questions: []
+      questionList: [],
+      currentPage:1
     }
-  },
-  mounted () {
-    this.getQuestions()
-  },
-  filters: {
-
   },
   methods: {
     calculateGap (time) {
@@ -169,35 +89,37 @@ export default {
         }
       }
     },
+
     getQuestions () {
-      let that = this
-      this.axios.get(this.prefix + 'questions', {
-        params: {
-          order: 'desc',
-          sort: 'activity',
-          site: 'stackoverflow'
+      let params = new URLSearchParams()
+      params.append('page', this.currentPage)
+      this.$axios.post("/api/api/question/hotquestion",params,{
+        headers:{
+          "x-auth-token": localStorage.getItem("token")
         }
       })
-        .then(function (res) {
-          console.log(res)
-          that.questions = res.data.items
-          console.log(that.questions)
+        .then((res)=> {
+          this.questionList = JSON.parse(res.data.data.questions)
+          console.log(this.questionList)
         })
-        .catch(function (error) {
+        .catch((error) =>{
           console.log(error)
         })
     },
-    selectChannel (item, index) {
-      console.log(item, index)
-      for (let i in this.filterArr) {
-        this.filterArr[i].isSelected = false
-      }
-      this.filterArr[index].isSelected = true
-    },
+
     skipToAsk () {
       this.$router.push({name: 'askQuestion'})
-    }
-  }
+    },
+    skipToQuestion (id) {
+      this.$router.push({path: '/question', query: {'id': id}})
+    },
+    formatImag (content) {
+      return content.replace(/<img/g, "<img style='max-width:100%;height:auto;'")
+    },
+  },
+  mounted () {
+    this.getQuestions()
+  },
 }
 </script>
 <style scoped>
@@ -428,7 +350,7 @@ export default {
     font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
 }
 /*********媒体查询**********/
-@media (max-width: 980px){
+@media (max-width: 4000px){
     .sidebar{
         display: none;
     }
@@ -479,5 +401,59 @@ export default {
     .interaction .answers .mini-counts {
         margin-bottom: 0;
     }
+}
+.posts {
+  padding: 12px 8px 12px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  border-bottom: 1px solid #4a4e51;
+}
+.stats-container {
+  margin-right: 16px;
+  width: 58px;
+  color: #6a737c;
+  margin-left: 8px;
+  font-size: 11px;
+}
+.vote {
+  padding: 0;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.vote-count {
+  font-size: 20px;
+}
+
+.count-text {
+  font-size: 12px;
+}
+
+.answer {
+  color: #63b47c;
+  border: 1px solid #63b47c;
+  border-radius: 3px;
+}
+
+.owner {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 3px;
+  background-color: #f2f3f3;
+  text-align: left;
+  vertical-align: top;
+  width: 200px;
+  height: 50px;
+}
+.user-block {
+  box-sizing: border-box;
+  padding: 5px 6px 0 7px;
+  color: #6a737c;
+}
+.action-time {
+  margin-top: 1px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  white-space: nowrap;
 }
 </style>

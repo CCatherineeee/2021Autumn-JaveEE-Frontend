@@ -60,7 +60,7 @@
               <br />
               <br />
               <div v-html="formatImag(item.description)" ></div>
-              <el-button type="text" @click="acceptAnswer(item.answerId)">accept this answer</el-button>
+              <el-button type="text" @click="acceptAnswer(item.answerId)" v-if="hasAuth">accept this answer</el-button>
             </el-main>
             <el-aside style="background-color: #e4e6e8;border-radius: 10px;height: 80px">
               <el-main >
@@ -129,6 +129,8 @@ export default {
           this.tagList = res.data.data[1]
           this.answerList = res.data.data[2]
           this.isExsit = true
+          console.log(this.questionInfo)
+          console.log(localStorage.getItem("id"))
           if (this.questionInfo.userId === localStorage.getItem('id')) { this.hasAuth = true }
         } else {
           this.isExsit = false

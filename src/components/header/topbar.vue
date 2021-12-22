@@ -107,7 +107,7 @@ export default {
         goSearch () {
             console.log(this.searchCode);
             bus.$emit('message-search', this.searchCode);
-            publicModule.goArouter(this, '/search'+ '?q=' + this.searchCode);
+            this.$router.push({path:"/search",query:{searchCode:this.searchCode}})
         },
         goLogin () {
           publicModule.goArouter(this, '/login');
