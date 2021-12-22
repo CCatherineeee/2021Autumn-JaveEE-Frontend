@@ -70,10 +70,46 @@ export default {
 
       rules:{
         newPwd:[
-          {required: true, message: '请输入密码', trigger: 'blur'}
+          {required: true, message: '请输入密码', trigger: 'blur'},
+          {
+            type: 'string',
+            message: '请输入不包含空格的字符',
+            trigger: 'blur',
+            transform(value) {
+              if (value && value.indexOf(' ') === -1) {
+                return value
+              } else {
+                return false
+              }
+            }
+          },
+
+          {
+        trigger: 'blur',
+        validator: (value, callback) => {
+          var passwordreg = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,16}/
+          if (!passwordreg.test(value)) {
+            callback(new Error('密码必须由数字、字母、特殊字符组合,请输入6-16位'))
+          }else{
+            callback()
+          }
+        } }
+
+
         ],
         copyNewPwd:[
-            {required: true, message: '请输入密码', trigger: 'blur'}
+            {required: true, message: '请输入密码', trigger: 'blur'},
+            {
+               trigger: 'blur',
+                validate: (value, callback) => {
+                 if(this.newPwd!=this.copyNewPwd){
+                   callback(new Error('新旧密码必须相同'))
+                 }
+                 else{
+                    callback()
+          }
+        } 
+            }
 
         ]
       }
@@ -106,8 +142,7 @@ export default {
           this.invalidAction=true;
         }
       })
-      //TODO: 密码强度jiance
-      //TODO: 密码相同
+
       
 
       formData:{
@@ -122,7 +157,19 @@ export default {
             "mailaddr":this.email,
             "password":this.newPwd
           }
-          this.login(args);
+          this.login(args)
+          .then((res)=>{
+            if(res.data.code==200){
+              this.$store.commit('changeLogin', res.data.data.token, res.data.data.id)// 存储token
+              this.$router.push("/");
+            }else{
+              this.$message({
+                message:"内部错误",
+                type:"error"
+              })
+            }
+
+          });
         }else{
           this.$message({
             message:"内部错误",

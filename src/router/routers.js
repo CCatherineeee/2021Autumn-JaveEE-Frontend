@@ -29,10 +29,7 @@ const index = [
     component: Login
   },
 
-  {
-    path: '/api/users/account-recovery/reset-pwd',
-    component: () => import('../page/auth/changePwd')
-  },
+
   {
     path: '/api/users/account-recovery/change-pwd',
     component: () => import('../page/auth/reqSendMail')
@@ -48,9 +45,13 @@ const index = [
         component: Home
       },
       {
-        path: '/users',
-        name: 'Users',
+        path: '/api/users/account-recovery/reset-pwd',
         component: ()=>import('../page/auth/changePwd')
+      },
+      {
+        path:'/api/users',
+        name:'Users',
+        component:()=>import('../page/users/users')
       },
       {
         path: '/tags',

@@ -4,7 +4,13 @@
   </div>
     <section class="content">
       <div class="register-content">
-        <div className='register-grid'>
+        <div v-if="succ">
+          <h1>
+            恭喜你成功发送邮件啦！！！！
+          </h1>
+
+        </div>
+        <div className='register-grid' v-else>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 Forgot your account’s password ?
                 Enter your email address and we’ll send you a recovery link.
@@ -32,6 +38,7 @@ export default {
 
     data(){
         return {
+          succ:false,
             ruleForm:{
                 mailaddr:'',
             },
@@ -62,7 +69,7 @@ export default {
                 })
               }else{
                 this.mailaddr='';
-                // TODO 添加发送后的界面
+                this.succ=true;
               }
             });
             
