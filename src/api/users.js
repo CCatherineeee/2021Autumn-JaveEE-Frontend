@@ -6,7 +6,7 @@ export function getUsers(data) {
     return getUsers({
         url: '/api/users',
         method: 'get',
-        data:data
+        data: data
     })
 }
 
@@ -16,6 +16,6 @@ export function searchUsers(data) {
     return searchUser({
         url: '/api/users/serach',
         method: 'get',
-        data:data
+        data: data
     })
 }
