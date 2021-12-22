@@ -1,20 +1,18 @@
 <template>
   <div>
     <el-container v-if="isExsit === true">
-      <el-header style="height: 100px">
         <div class='post-form-headline'>
           <el-row>
             <el-col span="13"><h2>{{questionInfo.title}}</h2></el-col>
             <el-col v-for="(tag,idx) in tagList" :key="idx" :span="2">
               <el-tag>
-                <el-link :underline="false" style="font-size: small; color: #1e7cf0">{{tag.tagName}}</el-link></el-tag>
+                <el-link :underline="false" style="font-size: small; color: #1e7cf0" @click="skipToTag(tag.tagId)">{{tag.tagName}}</el-link></el-tag>
             </el-col>
-            <el-col span="4"><el-button type="primary">Follow Question</el-button></el-col>
+            <el-col span="4"><el-button type="primary" @click="followQuestion">Follow Question</el-button></el-col>
           </el-row>
         </div>
         <p>asked {{getMyTime(questionInfo.postTime)}} by <el-link style="color: #1e7cf0" :underline="false"> {{questionInfo.user.userName}}</el-link>
         </p>
-      </el-header>
       <el-divider></el-divider>
       <el-main>
         <div>
@@ -150,7 +148,7 @@ export default {
       if (days === 0 && hours === 0) { return minutes.toString() + ' minutes ago' } else if (days === 0) { return hours.toString() + ' hours ago' } else { return days.toString() + ' days ago' }
     },
     postAnswer () {
-      this.$axios.post('/api/api/answers/addAnswer', JSON.stringify({
+      this.$axios.post('/api/answers/addAnswer', JSON.stringify({
         description: this.form.description,
         questionId: this.question_id
       }), {
@@ -197,6 +195,31 @@ export default {
       }).catch((error) => {
         console.log(error)
         this.$message('Net Error')
+      })
+    },
+    skipToTag (id) {
+      this.$router.push({path: '/tag', query: {id: id}})
+    },
+    followQuestion(){
+      let params = new URLSearchParams()
+      params.append('questionid', this.question_id)
+      this.$axios.post("/api/api/followquestion/addfollow",params,{
+        headers:{
+          "x-auth-token":localStorage.getItem('token')
+        }
+      }).then((res)=>{
+        if(res.data.code === 200){
+          this.$message("Followes Question Successfully")
+        }
+        else if(res.data.code === 401){
+          this.$message("Please Login")
+        }
+        else{
+          this.$message("Net Error")
+        }
+      }).catch((error)=>{
+        console.log(error)
+        this.$message("Net Error")
       })
     }
   },

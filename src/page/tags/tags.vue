@@ -8,7 +8,7 @@
     <el-divider></el-divider>
     <div v-for="(item,index) in tagList" :key="index">
       <el-col :span="8">
-        <el-card shadow="hover" style="border-color: #6a737c">
+        <el-card shadow="hover" style="border-color: #6a737c;height: 200px">
           <el-tag @click="skipToTag(item.tagId)">{{item.tagName}}</el-tag>
           <br />
           <br />

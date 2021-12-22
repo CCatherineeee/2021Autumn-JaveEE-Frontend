@@ -4,11 +4,11 @@
     <el-main>
           <div>
           <h1 className='headline'>Users</h1>
-          </div>  
+          </div>
 
        <div className='users-box pl16 pr16 pb16'>
          <el-input v-model="inputName" placeholder="filter by user" width="200px" @keyup.enter="handleSearch"></el-input>
-          
+
           <el-button-group>
             <el-button type="primary" >reputation</el-button>
           </el-button-group>
@@ -94,11 +94,11 @@
 
 <script>
 import {getUsers} from  '@/api/users'
-import {searchUsers} from '@/api/users'
+import {searchUser} from '@/api/users'
 
 export default {
   components: {
-    
+
   },
   data () {
     return {
@@ -196,7 +196,7 @@ export default {
       grid-gap: 12px;
       grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
     }
-  
+
 
  .headline {
     font-size: 28px;
@@ -245,9 +245,9 @@ export default {
   }
  .el-row {
     margin-bottom: 20px;
-   
+
   }
-  
+
   .el-col {
     border-radius: 4px;
   }

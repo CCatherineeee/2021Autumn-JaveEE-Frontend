@@ -5,12 +5,13 @@
   <p>{{tagInfo.tagDescription}}</p>
   <br />
   <p>{{tagInfo.tagView}} views</p>
+  <p>{{questionList.length}} questions</p>
   <br />
-  <el-row>
-    <el-col span="12"><p>{{questionList.length}} questions</p></el-col>
-    <el-col span="6"><el-button type="primary"  @click="followTag()">Follow Tag</el-button></el-col>
-
-    <el-col span="6"><el-button type="primary"  @click="skipToAsk()">Ask Question</el-button></el-col>
+  <el-row :gutter="4">
+    <el-col span="4"><el-button type="primary"  @click="followTag()">Follow Tag</el-button></el-col>
+    <el-col span="4"><el-button type="primary"  @click="ignoreTag()">Ignore Tag</el-button></el-col>
+    <el-col span="6"><el-button type="primary"  @click="dialogVisible = true">Edit Tag Description</el-button></el-col>
+    <el-col span="4"><el-button type="primary"  @click="skipToAsk()">Ask Question</el-button></el-col>
   </el-row>
   <el-divider></el-divider>
 
@@ -58,6 +59,25 @@
       </el-aside>
     </el-container>
   </div>
+  <el-dialog
+    title="Edit Tag Description"
+    :visible.sync="dialogVisible"
+    width="30%"
+    :before-close="handleClose">
+    <el-input
+      type="textarea"
+      :rows="2"
+      placeholder="请输入内容"
+      v-model="textarea">
+    </el-input>
+
+    <br />
+    <br />
+    <br />
+
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="editDescription">确 定</el-button>
+  </el-dialog>
 </div>
 </template>
 
@@ -69,7 +89,9 @@ export default {
       tagInfo: null,
       questionList: null,
       userList: null,
-      tagId: null
+      tagId: null,
+      dialogVisible: false,
+      textarea:""
     }
   },
   methods: {
@@ -113,6 +135,30 @@ export default {
     skipToQuestion (id) {
       this.$router.push({path: '/question', query: {'id': id}})
     },
+    editDescription(){
+      this.dialogVisible = false
+      console.log(JSON.stringify({
+        tagId:this.tagId,
+        description:this.textarea
+      }))
+      this.$axios.post("/api/api/tag/editDescription",JSON.stringify({
+        tagId:this.tagId,
+        description:this.textarea
+      }),{
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }).then((res)=>{
+        if(res.data.code === 200){
+          this.$message("修改成功！")
+          location.reload();
+        }
+      }).catch((error)=>{
+        console.log(error)
+        this.$message("Net Error")
+      })
+      this.textarea = ""
+    },
     followTag(){
       var params = new URLSearchParams()
       params.append('tagid', this.tagId)
@@ -128,7 +174,26 @@ export default {
           this.$message("Follow Successfully")
         }
       })
-    }
+    },
+    ignoreTag(){
+      let params = new URLSearchParams()
+      params.append('tagid', this.tagId)
+      this.$axios.post("/api/api/ignoretag/addfollow",params,{
+        headers:{
+          "x-auth-token":localStorage.getItem('token')
+        }
+      }).then((res)=>{
+        if(res.data.code === 401){
+          this.$message("Please Login")
+        }
+        else if(res.data.code === 200){
+          this.$message("Ignored Tag Successfully")
+        }
+      }).catch((error)=>{
+        console.log(error)
+        this.$message("Net Error")
+      })
+    },
   },
   mounted () {
     this.tagId = this.$route.query.id

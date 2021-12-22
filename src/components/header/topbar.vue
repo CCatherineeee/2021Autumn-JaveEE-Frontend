@@ -59,7 +59,6 @@
             <li class="-ctas">
                 <a href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
                 <a href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
-
             </li>
         </ul>
     </header>
@@ -131,7 +130,10 @@ export default {
             document.querySelector('#submit').style.opacity = '1'
             document.querySelector('.input-search').style.border = '1px solid #1997fc'
             document.querySelector('.input-search').style.boxShadow = 'inset 0 2px 2px #fafafb, 0 0 5px rgba(0,199,204,0.4);';
-        }
+        },
+      LogOut(){
+          this.$store.commit("delLogin")
+      }
     }
 }
 </script>
