@@ -5,8 +5,11 @@
   <p>{{tagInfo.tagDescription}}</p>
   <br />
   <p>{{tagInfo.tagView}} views</p>
+  <br />
   <el-row>
-    <el-col span="18"><p>{{questionList.length}} questions</p></el-col>
+    <el-col span="12"><p>{{questionList.length}} questions</p></el-col>
+    <el-col span="6"><el-button type="primary"  @click="followTag()">Follow Tag</el-button></el-col>
+
     <el-col span="6"><el-button type="primary"  @click="skipToAsk()">Ask Question</el-button></el-col>
   </el-row>
   <el-divider></el-divider>
@@ -71,7 +74,7 @@ export default {
   },
   methods: {
     getTagInfo () {
-      this.$axios.get('/api/tag/getTagById', {
+      this.$axios.get('/api/api/tag/getTagById', {
         params: {
           id: this.tagId
         }
@@ -109,13 +112,29 @@ export default {
     },
     skipToQuestion (id) {
       this.$router.push({path: '/question', query: {'id': id}})
+    },
+    followTag(){
+      var params = new URLSearchParams()
+      params.append('tagid', this.tagId)
+      this.$axios.post("/api/api/followtag/addfollow",params,{
+        headers:{
+          "x-auth-token":localStorage.getItem('token')
+        }
+      }).then((res)=>{
+        if(res.data.code === 401){
+          this.$message("Please Login")
+        }
+        else{
+          this.$message("Follow Successfully")
+        }
+      })
     }
   },
   mounted () {
     this.tagId = this.$route.query.id
     var params = new URLSearchParams()
     params.append('id', this.tagId)
-    this.$axios.post('/api/tag/addTagViews', params).then((res) => {
+    this.$axios.post('/api/api/tag/addTagViews', params).then((res) => {
       console.log(res)
       this.getTagInfo()
     })

@@ -121,7 +121,7 @@ export default {
   },
   methods: {
     async getQuestionDeatil () {
-      this.$axios.get('/api/question/getQuestion', {
+      this.$axios.get('/api/api/question/getQuestion', {
         params: {
           id: this.question_id
         }
@@ -150,7 +150,7 @@ export default {
       if (days === 0 && hours === 0) { return minutes.toString() + ' minutes ago' } else if (days === 0) { return hours.toString() + ' hours ago' } else { return days.toString() + ' days ago' }
     },
     postAnswer () {
-      this.$axios.post('/api/answers/addAnswer', JSON.stringify({
+      this.$axios.post('/api/api/answers/addAnswer', JSON.stringify({
         description: this.form.description,
         questionId: this.question_id
       }), {
@@ -177,7 +177,7 @@ export default {
     async addQuestionView () {
       var params = new URLSearchParams()
       params.append('id', this.question_id)
-      this.$axios.post('/api/question/addQuestionViews', params).then((res) => {
+      this.$axios.post('/api/api/question/addQuestionViews', params).then((res) => {
       }).catch((error) => {
         console.log(error)
         this.$message('Net Error')
@@ -187,7 +187,7 @@ export default {
       let params = new URLSearchParams()
       params.append('questionId', this.question_id)
       params.append('answerId', id)
-      this.$axios.post('/api/question/acceptAnswer', params).then((res) => {
+      this.$axios.post('/api/api/question/acceptAnswer', params).then((res) => {
         console.log(res)
         if (res.data.code === 200) {
           this.$message('Accept Successfully')

@@ -87,7 +87,11 @@ const index = [
         path: '/search',
         name: 'Search',
         component: Search
-      }
+      },
+      {
+        path: '/user',
+        component: () => import('../page/users/useDetail')
+      },
 
     ]
   }
