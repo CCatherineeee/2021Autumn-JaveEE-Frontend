@@ -1,42 +1,50 @@
 <template>
 <div>
- <div style="width: 100%;height: 100%;" class="banner-view">
+  <div style="width: 100%;height: 100%;" class="banner-view">
   </div>
-    <section class="content">
+  <section class="content">
 
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="mailaddr" prop="mailaddr">
-          <el-input v-model="ruleForm.mailaddr"></el-input>
-        </el-form-item>
+    <!-- TODO: 添加logo-->
+    <div className='icon-holder'>
+      <Logo className='icon' />
+    </div>
 
-        <el-form-item label="Password" prop="password">
-            <el-input v-model="ruleForm.password"></el-input>
-        </el-form-item>
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+     
+      <el-form-item  prop="mailaddr" label="Email" style="margin-left:0">
+        <el-input v-model="ruleForm.mailaddr"></el-input>
+      </el-form-item>
+      
 
-        <div>
-          忘记密码？
-          <el-button type="text"  @click="forgetPwd()">忘记密码</el-button>
-        </div>
 
-        <el-form-item>
-          <el-button type="primary" @click="submitForm()">Log In</el-button>
-        </el-form-item>
+      <el-form-item  prop="password" label="Password">
+          <el-input type="password" v-model="ruleForm.password"></el-input>
+      </el-form-item>
 
-        <div className='fs-caption license '>
-            By clicking "Log in", you agree to our
-            <el-link  href="https://stackoverflow.com/legal/terms-of-service/public"> terms of service</el-link>,
-            <el-link  href="https://stackoverflow.com/legal/privacy-policy">  privacy policy</el-link> and
-            <el-link  href="https://stackoverflow.com/legal/cookie-policy"> cookie policy</el-link>.
+      <div>
+        <el-button type="text"  @click="forgetPwd()" class="mybtn">忘记密码</el-button>
+      </div>
 
-        </div>
-      </el-form>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm()" class="mybtn">Log In</el-button>
+      </el-form-item>
 
-    </section>
-  </div>
+      <div className='fs-caption license '>
+          By clicking "Log in", you agree to our
+          <el-link  href="https://stackoverflow.com/legal/terms-of-service/public" class="my-link"> terms of service</el-link>,
+          <el-link  href="https://stackoverflow.com/legal/privacy-policy"  class="my-link">  privacy policy</el-link> and
+          <el-link  href="https://stackoverflow.com/legal/cookie-policy"  class="my-link"> cookie policy</el-link>.
+
+      </div>
+    </el-form>
+
+  </section>
+</div>
 </template>
 
 <script>
 import {login} from '@/api/auth'
+
 
 export default {
   data () {
@@ -106,10 +114,28 @@ export default {
 
   }
 }
-
 </script>
 
 <style scoped>
+
+.my-link{
+  color:rgb(91, 152, 231)
+}
+
+.icon-holder {
+  text-align: center;
+  margin-bottom: 15px;
+}
+  .icon-holder.icon {
+    width: 45px;
+    height: 45px;
+  }
+
+
+.mybtn{
+  margin:auto 10px;
+
+}
 .fs-caption {
     color:#6a737c;
     font-size: 12px;
@@ -122,6 +148,7 @@ margin-top: 32px;
 font-weight: 600;
 }
 
+
 .form-container  {
   width: 320px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 20px 48px rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.1);
@@ -129,7 +156,7 @@ font-weight: 600;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 24px;
-  background-color: #2d2d2d;
+  background-color: #f7f3f3e1;
   border-radius: 7px;
   box-sizing: inherit;
   display: block;
@@ -143,6 +170,7 @@ font-weight: 600;
       margin: 5px 0 3px 0;
       width: 100%;
     }
+  
 
   .form-container .fs-caption {
     color:#6a737c;
@@ -156,6 +184,7 @@ font-weight: 600;
     font-weight: 600;
   }
 
+
 .icon-holder {
   text-align: center;
   margin-bottom: 15px;
@@ -165,6 +194,7 @@ font-weight: 600;
     width: 45px;
     height: 45px;
   }
+
 
 .redirects {
   padding: 16px 16px 0 16px;

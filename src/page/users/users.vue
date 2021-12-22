@@ -1,24 +1,27 @@
 
 <template>
   <el-container>
-    <el-main>
-          <div>
-          <h1 className='headline'>Users</h1>
+    <el-header>
+      <div class="subheader">
+        Users
+      </div>
+    </el-header>
+
+    <el-main>      
+       <div className='users-box pl16 pr16 pb16'>
+          <el-input v-model="inputName" placeholder="filter by user" style="margin-top:10px;display:inline-block;width:40%" @keyup.enter="handleSearch"></el-input>
+          <div  style="display:inline-block; float:right">
+          <div style="display:inline-block; margin-right:20px">
+          <label class="s-label">reputation</label>
           </div>
 
-       <div className='users-box pl16 pr16 pb16'>
-         <el-input v-model="inputName" placeholder="filter by user" width="200px" @keyup.enter="handleSearch"></el-input>
-
-          <el-button-group>
-            <el-button type="primary" >reputation</el-button>
-          </el-button-group>
-
-          <el-button-group>
+          <el-button-group  style="display:inline-block;">
             <el-button type="text"  @focus="handleSortBy(7)">week</el-button>
             <el-button type="text" @focus="handleSortBy(0)">month</el-button>
             <el-button type="text" @focus="handleSortBy(1)" autofocus=true >all</el-button>
 
           </el-button-group>
+          </div>
         </div>
 
       <div >
@@ -183,6 +186,28 @@ export default {
 </script>
 
 <style scoped>
+.s-filter{
+  
+}
+.subheader{
+  clear: both;
+  /* margin-bottom: 10px; */
+  height: 40px;
+  padding-bottom: 0;
+  /* border-bottom: 1px solid var(--black-075); */
+  box-sizing: content-box;
+  font-size: 2em;
+  font-weight: 100;
+  
+}
+
+.s-label {
+    padding: 0 0px;
+    color: var(--fc-dark);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+}
 .user-browser {
     float: none;
     clear: both;

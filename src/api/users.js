@@ -11,7 +11,7 @@ export function getUsers(data) {
 }
 
 // 
-export function searchUser(data) {
+export function searchUsers(data) {
 
     return searchUser({
         url: '/api/users/serach',
