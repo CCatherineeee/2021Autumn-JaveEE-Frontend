@@ -32,7 +32,7 @@
 
               <div class='vote'>
                 <!-- <span class='vote-count'>{{item.tagnames.length ? 1 : 0}}</span> -->
-                <span class='vote-count fc-green-500'>{{tagList[index].length}}</span>
+                <span class='vote-count fc-green-500'>{{item.linkedTagList.length}}</span>
                 <div class='count-text'>tags</div>
               </div>
             </div>
@@ -46,9 +46,9 @@
             <div v-html="formatImag(item.description)"></div>
             <br />
             <el-row :gutter="2">
-              <el-col v-for="(tag,idx) in tagList[index]" :key="idx" :span="3">
+              <el-col v-for="(tag,idx) in item.linkedTagList" :key="idx" :span="3">
                 <el-tag @click="skipToTag(tag.tagId)">
-                  <el-link :underline="false" style="font-size: small; color: #1e7cf0">{{tag.tagName}}</el-link></el-tag>
+                  <el-link :underline="false" style="font-size: small; color: #1e7cf0">{{tag.tag.tagName}}</el-link></el-tag>
               </el-col>
             </el-row>
           </div>
@@ -60,13 +60,19 @@
             <div class='user-block fc-black-500'>
               <div class='action-time'>
                 <p>asked {{getMyTime(item.postTime)}} by</p>
-                <el-link style="color: #1e7cf0" :underline="false"> {{userList[index].userName}}</el-link>
+                <el-link style="color: #1e7cf0" :underline="false"> {{item.user.userName}}</el-link>
               </div>
             </div>
           </div>
         </el-aside>
       </el-container>
     </div>
+    <el-pagination
+      :page-size=20
+      :pager-count=curPage
+      layout="prev, pager, next"
+      :total=questionNum>
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -79,16 +85,21 @@ export default {
     return {
       questionList: [],
       tagList: [],
-      userList: []
+      userList: [],
+      curPage: 1,
+      questionNum: 1
     }
   },
   methods: {
     getAllQuestion () {
-      this.$axios('/api/question/getAllQuestion').then((res) => {
+      this.$axios.get('/api/question/getAllQuestion',{
+        params:{
+          page : this.curPage
+        }
+      }).then((res) => {
         if (res.data.code === 200) {
           this.questionList = res.data.data[0]
-          this.tagList = res.data.data[1]
-          this.userList = res.data.data[2]
+          this.questionNum = res.data.data[1]
         }
       }).catch((error) => {
         console.log(error)

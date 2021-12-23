@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': { // 匹配所有以 '/api'开头的请求路径
-          // target: 'http://ip:5050', // 代理目标的基础路径
-          target: 'http://101.133.237.83:5050',
+          // target: 'http://101.133.237.83:5050', // 代理目标的基础路径
+          target: 'http://localhost:5050',
 
           changeOrigin: true, // 支持跨域
           /*

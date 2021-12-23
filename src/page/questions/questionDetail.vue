@@ -505,7 +505,6 @@ export default {
   },
   async mounted() {
     this.question_id = this.$route.query.id;
-    await this.addQuestionView();
     await this.getQuestionDeatil();
   },
 };
