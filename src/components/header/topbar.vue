@@ -56,17 +56,10 @@
                     </svg>
                 </a>
             </li>
-<<<<<<< HEAD
             <li class="-ctas">
                 <a v-if="isLogin" href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
                 <a v-if="isLogin" href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
-              <a v-else href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Log Out</a>
-
-=======
-            <li class="-ctas" v-if="show">
-                <a href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
-                <a href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
->>>>>>> c04af55a1e735e54f5ee340cbe214ef92c5dd37d
+              <a v-else href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="LogOut">Log Out</a>
             </li>
         </ul>
     </header>
@@ -157,6 +150,7 @@ export default {
         },
       LogOut(){
           this.$store.commit("delLogin")
+        location.reload()
       }
     }
 }
