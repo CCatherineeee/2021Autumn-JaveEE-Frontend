@@ -18,12 +18,13 @@
           <el-button-group  style="display:inline-block;">
             <el-button type="text"  @click="handleSortBy('7')" :class="[sortType==7?'s-filter-active':'s-filter']">week</el-button>
             <el-button type="text" @click="handleSortBy('0')" :class="[sortType==0?'s-filter-active':'s-filter']">month</el-button>
-            <el-button type="text" @click="handleSortBy('1')" autofocus=true :class="[sortType==1?'s-filter-active':'s-filter']">all</el-button>
+            <el-button type="text" @click="handleSortBy('1')" autofocus :class="[sortType==1?'s-filter-active':'s-filter']">all</el-button>
 
           </el-button-group>
           </div>
         </div>
 
+    <div v-if="itemNum!=0">
       <div >
         <div class="s-users">
         <el-row v-for="r in rowNums" :key="r" :gutter="20">
@@ -31,11 +32,11 @@
             >
             <el-card class="box-card">
               <div  :ref="rowItems * (r - 1)" class="text item">
-                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)].userId)">typeList[rowItems * (r - 1)].userName</el-button>
+                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)].userId)">{{typeList[rowItems * (r - 1)].userName}}</el-button>               
               </div>
 
               <div  :ref="rowItems * (r - 1)" class="text item reputation-score">
-                typeList[rowItems * (r - 1)].reputation
+                {{typeList[rowItems * (r - 1)].reputation}}
               </div>
             </el-card></el-col
           >
@@ -43,11 +44,11 @@
             >
             <el-card class="box-card" v-if="rowItems * (r - 1) + 1<typeList.length">
               <div  :ref="rowItems * (r - 1)+1" class="text item ">
-                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+1].userId)">typeList[rowItems * (r - 1)].userName</el-button>
+                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+1].userId)">{{typeList[rowItems * (r - 1)+2].userName}}</el-button>               
               </div>
 
               <div  :ref="rowItems * (r - 1)+1" class="text item reputation-score">
-                typeList[rowItems * (r - 1)+1].reputation
+                {{typeList[rowItems * (r - 1)+1].reputation}}
               </div>
             </el-card></el-col
           >
@@ -55,11 +56,11 @@
             >
             <el-card class="box-card" v-if="rowItems * (r - 1) + 2<typeList.length">
               <div  :ref="rowItems * (r - 1)+2" class="text item">
-                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+2].userId)">typeList[rowItems * (r - 1)].userName</el-button>
+                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+2].userId)">{{typeList[rowItems * (r - 1)+2].userName}}</el-button>               
               </div>
 
               <div  :ref="rowItems * (r - 1)+2" class="text item reputation-score">
-                typeList[rowItems * (r - 1)+2].reputation
+               {{ typeList[rowItems * (r - 1)+2].reputation}}
               </div>
             </el-card></el-col
           >
@@ -67,17 +68,17 @@
             >
              <el-card class="box-card" v-if="rowItems * (r - 1) + 3<typeList.length">
               <div  :ref="rowItems * (r - 1)+3" class="text item">
-                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+3].userId)">typeList[rowItems * (r - 1)].userName</el-button>
+                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+3].userId)">{{typeList[rowItems * (r - 1)+3].userName}}</el-button>               
               </div>
 
               <div  :ref="rowItems * (r - 1)+3" class="text item reputation-score">
-                typeList[rowItems * (r - 1)+3].reputation
+                {{typeList[rowItems * (r - 1)+3].reputation}}
               </div>
             </el-card></el-col
           >
         </el-row>
         </div>
-      </div>
+      </div>    
 
       <div>
         <el-pagination
@@ -89,6 +90,13 @@
           :total="itemNum">
         </el-pagination>
       </div>
+    </div>
+
+    <div v-else class="s-empty-state">
+        <img class="s-svg" :src="imgs" alt />
+      sorry
+    </div>
+
     </el-main>
 
   </el-container>
@@ -106,10 +114,14 @@ export default {
   },
   data () {
     return {
+      imgs: require("@/assets/empty_search.svg"),
+
       inputName:'',
       sortType:0,
 
-      typeList:["a",'b','c','d','e','f'],
+      typeList:[
+
+      ],
       rowItems:4,
       curPage:1,
 
@@ -122,6 +134,10 @@ export default {
       return Math.ceil(this.typeList.length / 4);
     },
 
+  },
+
+  mouted(){
+    this.handleSortBy('0');
 
   },
 
@@ -134,16 +150,16 @@ export default {
       console.log('新改变的type：',type)
       this.sortType=Number(type);
 
-      args:{
-        tab:"Reputation";
-        filter:this.curPage;
+      let args={
+        tab:"Reputation",
+        filter:this.curPage,
         duration:this.sortType
 
       };
 
-      arg:{
-         tab:"Reputation";
-        duration:this.sortType;
+      let arg={
+         tab:"Reputation",
+        duration:this.sortType,
       }
 
       getUsersCount(arg)
@@ -222,6 +238,23 @@ export default {
 </script>
 
 <style scoped>
+
+.s-svg{
+      width: 20;
+    height: 20;
+        vertical-align: bottom;
+        margin-bottom: 24px !important
+}
+.s-empty-state {
+  border-color:aqua;
+      border-style: solid !important;
+    border-width: 1px !important;
+    border-radius: 5px !important;
+    color: red;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
 .s-filter{
     display: block;
     margin: 0 0 0 2px;

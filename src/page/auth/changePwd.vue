@@ -7,7 +7,6 @@
       </div>
     </el-header >
     <div style="overflow-y:scroll;height:300px">
-    <!-- TODO: footer置地-->
         <el-footer v-if="valid" >
           <div style="margin-top:10px;margin-bottom:10px">Recover account for {{mail}} </div>
           <el-form :rules="rules">
@@ -127,24 +126,23 @@ export default {
     }
   },
 
-//TODO 怎么不执行
   mounted(){
-    // 检查连接是否有效
+    //检查连接是否有效
     // console.log("路由",this.$route)
     // console.log(this.$route.params.token)
-    // console.log(this.$route.query)
-    // let id=this.$route.query.token
-    //   checkURL(id)
-    //   .then((res)=>{
-    //     if(res.data.code==200){
-    //       console.log('连接有效')
-    //       this.valid=true;
-    //       this.mail=res.data.data.email;
-    //     }else{
-    //       console.log('连接失效！')
-    //     }
+    console.log(this.$route.query.token)
+    let id=this.$route.query.token
+      checkURL(this.$route.query.token)
+      .then((res)=>{
+        if(res.data.code==200){
+          console.log('连接有效')
+          this.valid=true;
+          this.mail=res.data.data.email;
+        }else{
+          console.log('连接失效！')
+        }
 
-    //   })
+      })
   },
   methods: {
     validateInput(value){
@@ -172,8 +170,8 @@ export default {
         })}else{
           this.validateInput(this.newPwd);
         };
-      }
-    },
+      },
+    
     submitForms(){
       // checkURL()
       // .then((res)=>{
@@ -186,43 +184,44 @@ export default {
 
       
 
-      formData:{
-        mailAddr:this.mail;
+      let formData={
+        mailAddr:this.mail,
         newPwd:this.newPwd
       };
 
-      // resetPwd(formData)
-      // .then((res)=>{
-      //   if(res.data.code==200){
-      //     args={
-      //       "mailaddr":this.email,
-      //       "password":this.newPwd
-      //     }
-      //     this.login(args)
-      //     .then((res)=>{
-      //       if(res.data.code==200){
-      //         this.$store.commit('changeLogin', res.data.data.token, res.data.data.id)// 存储token
-      //         this.$router.push("/");
-      //       }else{
-      //         this.$message({
-      //           message:"内部错误",
-      //           type:"error"
-      //         })
-      //       }
+      resetPwd(JSON.stringify(formData))
+      .then((res)=>{
+        if(res.data.code==200){
+          let args={
+            "mailaddr":this.mail,
+            "password":this.newPwd
+          }
+          login(args)
+          .then((res)=>{
+            if(res.data.code==200){
+              this.$store.commit('changeLogin', res.data.data.token, res.data.data.id)// 存储token
+              this.$router.push("/");
+            }else{
+              this.$message({
+                message:"内部错误",
+                type:"error"
+              })
+            }
 
-      //     });
-      //   }else{
-      //     this.$message({
-      //       message:"内部错误",
-      //       type:"error"
-      //     })
-      //   }
+          });
+        }else{
+          this.$message({
+            message:"内部错误",
+            type:"error"
+          })
+        }
         
-      // });
+      });
 
     }
-    
   }
+    
+}
 
 </script>
 
