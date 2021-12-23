@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     getTagInfo () {
-      this.$axios.get('/api/api/tag/getTagById', {
+      this.$axios.get('/api/tag/getTagById', {
         params: {
           id: this.tagId
         },
@@ -152,7 +152,7 @@ export default {
         tagId:this.tagId,
         description:this.textarea
       }))
-      this.$axios.post("/api/api/tag/editDescription",JSON.stringify({
+      this.$axios.post("/api/tag/editDescription",JSON.stringify({
         tagId:this.tagId,
         description:this.textarea
       }),{
@@ -173,7 +173,7 @@ export default {
     followTag(){
       var params = new URLSearchParams()
       params.append('tagid', this.tagId)
-      this.$axios.post("/api/api/followtag/addfollow",params,{
+      this.$axios.post("/api/followtag/addfollow",params,{
         headers:{
           "x-auth-token":localStorage.getItem('token')
         }
@@ -190,7 +190,7 @@ export default {
     disfollowTag(){
       var params = new URLSearchParams()
       params.append('tagid', this.tagId)
-      this.$axios.post("/api/api/followtag/removefollow",params,{
+      this.$axios.post("/api/followtag/removefollow",params,{
         headers:{
           "x-auth-token":localStorage.getItem('token')
         }
@@ -208,7 +208,7 @@ export default {
     ignoreTag(){
       let params = new URLSearchParams()
       params.append('tagid', this.tagId)
-      this.$axios.post("/api/api/ignoretag/addfollow",params,{
+      this.$axios.post("/api/ignoretag/addfollow",params,{
         headers:{
           "x-auth-token":localStorage.getItem('token')
         }
@@ -230,7 +230,7 @@ export default {
     disignoreTag(){
       let params = new URLSearchParams()
       params.append('tagid', this.tagId)
-      this.$axios.post("/api/api/ignoretag/removefollow",params,{
+      this.$axios.post("/api/ignoretag/removefollow",params,{
         headers:{
           "x-auth-token":localStorage.getItem('token')
         }
@@ -253,7 +253,7 @@ export default {
     this.tagId = this.$route.query.id
     var params = new URLSearchParams()
     params.append('id', this.tagId)
-    this.$axios.post('/api/api/tag/addTagViews', params).then((res) => {
+    this.$axios.post('/api/tag/addTagViews', params).then((res) => {
       console.log(res)
       this.getTagInfo()
     })
