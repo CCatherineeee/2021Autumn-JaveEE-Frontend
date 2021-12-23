@@ -3,7 +3,7 @@
     <el-container v-if="isExsit === true">
       <div class="post-form-headline">
         <el-row>
-          <el-col span="13"
+          <el-col :span="13"
             ><h2>{{ questionInfo.title }}</h2></el-col
           >
           <el-col v-for="(tag, idx) in tagList" :key="idx" :span="2">
@@ -16,12 +16,12 @@
               ></el-tag
             >
           </el-col>
-          <el-col v-if="isFollow" span="4"
+          <el-col v-if="isFollow" :span="4"
             ><el-button type="primary" @click="followQuestion"
               >Follow Question</el-button
             ></el-col
           >
-          <el-col v-else span="4"
+          <el-col v-else :span="4"
             ><el-button type="primary" @click="disfollowQuestion"
               >Follow Question</el-button
             ></el-col
@@ -38,11 +38,14 @@
       <el-main>
         <div>
           <el-row class="posts">
-            <el-col span="2">
+            <el-col :span="2">
               <div class="stats-container">
                 <div class="stats">
                   <div class="vote-count" style="text-align: center">
-                    <button class="" @click="voteEvent('agree', 'Question')">
+                    <button
+                      :class="{ btn_agree: isAgree }"
+                      @click="voteEvent('agree', 'Question')"
+                    >
                       <a
                         href="javascript:void(0)"
                         class="-link"
@@ -66,7 +69,10 @@
                     >
                       {{ questionInfo.agreeVoting - questionInfo.rejectVoting }}
                     </div>
-                    <button class="" @click="voteEvent('reject', 'Question')">
+                    <button
+                      :class="{ btn_reject: isReject }"
+                      @click="voteEvent('reject', 'Question')"
+                    >
                       <a
                         href="javascript:void(0)"
                         class="-link"
@@ -87,7 +93,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col span="2">
+            <el-col :span="2">
               <div class="stats-container">
                 <div class="stats">
                   <div class="vote">
@@ -128,12 +134,14 @@
         <br />
         <div v-for="(item, index) in answerList" :key="index">
           <el-container>
-            <el-col span="2">
+            <el-col :span="2">
               <div class="stats-container">
                 <div class="stats">
                   <div class="vote-count" style="text-align: center">
                     <button
-                      class=""
+                      :class="{
+                        btn_agree: agreeList.indexOf(item.answerId) != -1,
+                      }"
                       @click="voteEvent('agree', 'Answer', item.answerId)"
                     >
                       <a
@@ -159,7 +167,9 @@
                       {{ item.agreeVoting - item.rejectVoting }}
                     </div>
                     <button
-                      class=""
+                      :class="{
+                        btn_reject: rejectList.indexOf(item.answerId) != -1,
+                      }"
                       @click="voteEvent('reject', 'Answer', item.answerId)"
                     >
                       <a
@@ -274,20 +284,53 @@ export default {
       },
       hasAuth: false,
       isFollow: false,
+      isAgree: false,
+      isReject: false,
+      agreeList: [],
+      rejectList: [],
     };
   },
   methods: {
     async voteEvent(a, b, c = 0) {
       var url;
-      var eventId;
-      var event;
       var data_raw;
-      url = "/api/" + a + b;
+      url = a + b;
       if (b == "Question") {
+        if (a == "agree" && this.isReject) {
+          this.$message("you have already agree this question");
+          return;
+        } else if (a == "reject" && this.isAgree) {
+          this.$message("you have already reject this question");
+          return;
+        }
+        if (a == "agree" && this.isAgree) {
+          url = "dis" + url;
+          this.isAgree = false;
+        } else if (a == "reject" && this.isReject) {
+          url = "dis" + url;
+          this.isReject = false;
+        } else if (a == "agree") this.isAgree = true;
+        else if (a == "reject") this.isReject = true;
         data_raw = { questionId: this.question_id };
       } else {
+        if (a == "agree" && this.rejectList.indexOf(c) != -1) {
+          this.$message("you have already agree this answer");
+          return;
+        } else if (a == "reject" && this.agreeList.indexOf(c) != -1) {
+          this.$message("you have already reject this answer");
+          return;
+        }
+        if (a == "agree" && this.agreeList.indexOf(c) != -1) {
+          url = "dis" + url;
+          this.agreeList.splice(this.agreeList.indexOf(c), 1);
+        } else if (a == "reject" && this.rejectList.indexOf(c) != -1) {
+          url = "dis" + url;
+          this.rejectList.splice(this.rejectList.indexOf(c), 1);
+        } else if (a == "agree") this.agreeList.push(c);
+        else if (a == "reject") this.rejectList.push(c);
         data_raw = { answerId: c };
       }
+      url = "/api/" + url;
       this.$axios
         .get(url, {
           params: data_raw,
@@ -503,11 +546,66 @@ export default {
           this.$message("Net Error");
         });
     },
+    getAgree() {
+      console.log("get");
+      this.$axios
+        .get("/api/question/getQuestionOperate", {
+          params: {
+            questionId: this.question_id,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          if (res.data.code === 200) {
+            if (res.data.data.agree) this.isAgree = true;
+            if (res.data.data.reject) this.isReject = true;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message("Net Error");
+        });
+    },
+    getAnsAgree() {
+      console.log("get");
+      this.$axios
+        .get("/api/answers/getAnswerOperate", {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          if (res.data.code === 200) {
+            for (const iterator of res.data.data.agree) {
+              this.agreeList.push(iterator.answerId);
+            }
+            for (const iterator of res.data.data.reject) {
+              this.rejectList.push(iterator.answerId);
+            }
+            console.log(this.agreeList);
+            console.log(this.rejectList);
+            this.$message("Posted Successfully");
+          } else {
+            this.$message("please login first!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message("Net Error");
+        });
+    },
   },
   async mounted() {
     this.question_id = this.$route.query.id;
     await this.addQuestionView();
     await this.getQuestionDeatil();
+    this.getAgree();
+    this.getAnsAgree();
   },
 };
 </script>
@@ -515,6 +613,12 @@ export default {
 <style scoped>
 .post-form-headline {
   font-size: 27px;
+}
+.btn_agree {
+  background: rgba(0, 255, 0, 0.5);
+}
+.btn_reject {
+  background: rgba(255, 0, 0, 0.5);
 }
 .posts {
   padding: 12px 8px 12px 8px;

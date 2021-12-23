@@ -4,7 +4,7 @@
       <div @click="closeDialog" class="closeImg"></div>
       <div class="reputationChange">
         <div v-for="(item, index) in reputationList" :key="index">
-          <div class=reputationEl>{{ item.description }}</div>
+          <div class="reputationEl">{{ item.description }}</div>
         </div>
       </div>
     </div>
@@ -78,7 +78,7 @@ export default {
 }
 .reputationChange {
   margin-top: 30px;
-  text-align:left;
+  text-align: left;
   margin-left: 30px;
 }
 .reputationEl {
