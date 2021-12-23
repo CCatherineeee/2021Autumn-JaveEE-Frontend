@@ -15,11 +15,11 @@
                 <div class='stats-container'>
                   <div class='stats'>
                     <div class='vote'>
-                      <span class='vote-count'>{{item.view}}</span>
+                      <span class='vote-count'>{{item.views}}</span>
                       <div class='count-text'>views</div>
                     </div>
 
-                    <div class='vote' v-if="item.acceptId === null">
+                    <div class='vote' v-if="item.acceptId === undefined">
                       <span class='vote-count'>{{item.answerNum}}</span>
                       <div class='count-text'>answers</div>
                     </div>

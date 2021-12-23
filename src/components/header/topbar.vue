@@ -247,11 +247,11 @@ export default {
     goSearch() {
       // console.log(this.searchCode);
       bus.$emit("message-search", this.searchCode);
+      this.isLogin = true;
       this.$router.push({
         path: "/search",
         query: { searchCode: this.searchCode },
       });
-      location.reload();
     },
     goLogin() {
       publicModule.goArouter(this, "/login");

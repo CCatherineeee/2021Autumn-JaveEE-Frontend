@@ -16,7 +16,7 @@
           <div class='stats-container'>
             <div class='stats'>
               <div class='vote'>
-                <span class='vote-count'>{{item.view}}</span>
+                <span class='vote-count'>{{item.views}}</span>
                 <div class='count-text'>views</div>
               </div>
 
@@ -68,8 +68,9 @@
       </el-container>
     </div>
     <el-pagination
-      :page-size=20
-      :pager-count=curPage
+      :page-size=3
+      :current-page.sync="curPage"
+      @current-change="getAllQuestion"
       layout="prev, pager, next"
       :total=questionNum>
     </el-pagination>
@@ -92,6 +93,7 @@ export default {
   },
   methods: {
     getAllQuestion () {
+      console.log(this.curPage)
       this.$axios.get('/api/question/getAllQuestion',{
         params:{
           page : this.curPage

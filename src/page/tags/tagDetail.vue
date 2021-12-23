@@ -158,11 +158,18 @@ export default {
       }),{
         headers: {
           'Content-Type': 'application/json',
+          "x-auth-token":localStorage.getItem("token")
         }
       }).then((res)=>{
         if(res.data.code === 200){
           this.$message("修改成功！")
           location.reload();
+        }
+        else if(res.data.code === 401){
+          this.$message("Please Login！")
+        }
+        else{
+
         }
       }).catch((error)=>{
         console.log(error)

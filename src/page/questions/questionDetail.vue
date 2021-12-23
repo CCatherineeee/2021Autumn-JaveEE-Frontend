@@ -342,9 +342,11 @@ export default {
         .then((res) => {
           if (res.data.code === 200) {
             this.$message("Posted Successfully");
+            location.reload()
           } else {
             this.$message("please login first!");
           }
+
         })
         .catch((error) => {
           console.log(error);
@@ -589,9 +591,7 @@ export default {
             }
             console.log(this.agreeList);
             console.log(this.rejectList);
-            this.$message("Posted Successfully");
           } else {
-            this.$message("please login first!");
           }
         })
         .catch((error) => {
@@ -602,7 +602,6 @@ export default {
   },
   async mounted() {
     this.question_id = this.$route.query.id;
-    await this.addQuestionView();
     await this.getQuestionDeatil();
     this.getAgree();
     this.getAnsAgree();

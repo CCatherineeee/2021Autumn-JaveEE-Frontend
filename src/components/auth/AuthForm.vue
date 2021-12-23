@@ -96,10 +96,9 @@ export default {
             console.log('成功登陆')
             console.log(res.data.data.token)
             console.log(res.data.data.id)
-            this.$router.push("/");
             this.$store.commit('changeLogin', res.data.data.token)// 存储token
             localStorage.setItem("id",res.data.data.id)
-            location.reload()
+            this.$router.push({path:"/"});
           }
           this.resetForm();
         }).catch((error)=>{

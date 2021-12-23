@@ -44,14 +44,14 @@ export default {
           if (res.data.code === 200) {
             this.reputationList = res.data.data;
             console.log(this.reputationList);
-            this.$message("Posted Successfully");
+            //this.$message("Posted Successfully");
           } else {
-            this.$message("please login first!");
+            //this.$message("please login first!");
           }
         })
         .catch((error) => {
           console.log(error);
-          this.$message("Net Error");
+          //this.$message("Net Error");
         });
     },
     closeDialog() {
