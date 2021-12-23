@@ -5,7 +5,7 @@ import request from '@/util/request'
 export function login(data) {
 
 return request({
-    url: '/api/user/login',
+    url: '/api/api/user/login',
     method: 'post',
     data:data
 })
@@ -14,9 +14,9 @@ return request({
 
 // 注册
 export function register(data) {
-    
+
     return request({
-        url: '/api/register',
+        url: '/api/api/register',
         method: 'post',
         data:data
     })
@@ -25,7 +25,7 @@ export function register(data) {
 // 修改密码
 export function resetPwd(data) {
     return request({
-        url: '/api/users/resetPwd',
+        url: '/api/api/users/resetPwd',
         method: 'post',
         data:data
     })
@@ -34,7 +34,7 @@ export function resetPwd(data) {
 // 请求发送邮件
 export function reqSendMail(data){
     return request({
-        url: '/api/users/reqSendLink',
+        url: '/api/api/users/reqSendLink',
         method: 'get',
         params:data
     })
@@ -43,7 +43,7 @@ export function reqSendMail(data){
 // 检查邮件连接是否有效
 export function checkURL(data){
     return request({
-        url: '/api/users/recover',
+        url: '/api/api/users/recover',
         method: 'get',
         params:data
     })

@@ -3,8 +3,8 @@
         <div class="logo-container">
             <a class='logo' href="javascript:void(0)">
                 <img src="../../assets/stack_logo.png" alt="">
-                <span class="stack-font">stack
-                    <span class="flow">overflow</span>
+                <span class="stack-font">runtime
+                    <span class="flow">error</span>
                 </span>
             </a>
         </div>
@@ -57,8 +57,10 @@
                 </a>
             </li>
             <li class="-ctas">
-                <a href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
-                <a href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
+                <a v-if="isLogin" href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
+                <a v-if="isLogin" href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
+              <a v-else href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Log Out</a>
+
             </li>
         </ul>
     </header>
@@ -72,7 +74,8 @@ export default {
         return {
             isFocus: false,
             searchCode: '',
-            key: ''
+            key: '',
+          isLogin:false
         }
     },
     watch: {
@@ -82,6 +85,12 @@ export default {
         }
     },
     mounted () {
+      if(localStorage.getItem('token') === undefined){
+        this.isLogin = false
+      }
+      else{
+        this.isLogin = true
+      }
     },
      beforeDestroy () {
     },

@@ -94,7 +94,9 @@ export default {
             this.$router.push("/");
           }
           this.resetForm();
-        })
+        }).catch((error)=>{
+          this.$message("Net Error")
+      })
       this.resetForm()
     },
 
