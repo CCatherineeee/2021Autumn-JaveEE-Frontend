@@ -56,7 +56,7 @@
           </svg>
         </a>
       </li>
-      <li class="-item" @click="vm.showDialog = true">
+      <li class="-item" @click="openDialog">
         <a
           href="javascript:void(0)"
           class="-link"
@@ -81,7 +81,11 @@
           ></span>
         </a>
       </li>
-      <Dialog @closeDialog="vm.showDialog = false" v-if="vm.showDialog"></Dialog>
+      <el-dialog :visible.sync="vm.showDialog">
+        <div v-for="(item, index) in reputationList" :key="index">
+          <div class="reputationEl" style="text-align: center;">{{ item.description }}</div>
+        </div>
+      </el-dialog>
       <li class="-item">
         <a
           href="javascript:void(0)"
@@ -179,10 +183,8 @@
 </template>
 <script>
 import Vue from "vue";
-import Dialog from "./dialog.vue";
 import * as publicModule from "../../core/js/publicMethod";
 import bus from "../../core/js/bus.js";
-Vue.component("Dialog", Dialog);
 export default {
   name: "topbar",
   data() {
@@ -194,6 +196,7 @@ export default {
       searchCode: "",
       key: "",
       isLogin: false,
+      reputationList: [],
     };
   },
   watch: {
@@ -234,6 +237,57 @@ export default {
   methods: {
     close() {
       this.vm.showDialog = false;
+    },
+    getReputation() {
+      console.log("get");
+      this.$axios
+        .get("/api/GetAllReputationSearch", {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.reputationList = res.data.data;
+            console.log(this.reputationList);
+            //this.$message("Posted Successfully");
+          } else {
+            //this.$message("please login first!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          //this.$message("Net Error");
+        });
+    },
+    closeDialog() {
+      //给父组件传参
+      this.$emit("closeDialog", false);
+    },
+    openDialog(){
+      this.vm.showDialog = true
+      this.$axios
+        .get("/api/GetAllReputationSearch", {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.reputationList = res.data.data;
+            console.log(this.reputationList);
+            //this.$message("Posted Successfully");
+          } else {
+            //this.$message("please login first!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          //this.$message("Net Error");
+        });
+
     },
     watchInput(value) {
       console.log(value);
