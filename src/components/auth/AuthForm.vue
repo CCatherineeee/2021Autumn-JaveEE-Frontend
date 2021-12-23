@@ -9,11 +9,11 @@
     </div>
 
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-     
+
       <el-form-item  prop="mailaddr" label="Email" style="margin-left:0">
         <el-input v-model="ruleForm.mailaddr"></el-input>
       </el-form-item>
-      
+
 
 
       <el-form-item  prop="password" label="Password">
@@ -99,6 +99,7 @@ export default {
             this.$store.commit('changeLogin', res.data.data.token)// 存储token
             localStorage.setItem("id",res.data.data.id)
             this.$router.push("/");
+            location.reload()
           }
           this.resetForm();
         }).catch((error)=>{
@@ -171,7 +172,7 @@ font-weight: 600;
       margin: 5px 0 3px 0;
       width: 100%;
     }
-  
+
 
   .form-container .fs-caption {
     color:#6a737c;

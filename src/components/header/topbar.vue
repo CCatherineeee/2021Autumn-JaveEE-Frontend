@@ -57,9 +57,9 @@
                 </a>
             </li>
             <li class="-ctas">
-                <a v-if="isLogin" href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
-                <a v-if="isLogin" href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
-              <a v-else href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="LogOut">Log Out</a>
+                <a v-if="isLogin === false" href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
+                <a v-if="isLogin === false" href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
+              <a v-if="isLogin === true" href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="LogOut">Log Out</a>
             </li>
         </ul>
     </header>
@@ -93,7 +93,7 @@ export default {
         }
     },
     mounted () {
-      if(localStorage.getItem('token') === undefined){
+      if(localStorage.getItem('token') === undefined || localStorage.getItem('token') === null){
         this.isLogin = false
       }
       else{
@@ -149,7 +149,7 @@ export default {
             document.querySelector('.input-search').style.boxShadow = 'inset 0 2px 2px #fafafb, 0 0 5px rgba(0,199,204,0.4);';
         },
       LogOut(){
-          this.$store.commit("delLogin")
+        localStorage.removeItem('token')
         location.reload()
       }
     }
