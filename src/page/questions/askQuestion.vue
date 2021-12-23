@@ -65,6 +65,10 @@ export default {
   methods: {
 
     postQuestion () {
+      if(this.form.title === "" || this.form.description === "" || this.form.tagnames === ""){
+        this.$message("Please Finish Your Question")
+        return
+      }
       this.$axios.post('/api/api/question/addQuestion', JSON.stringify(this.form),
         {
           headers: {

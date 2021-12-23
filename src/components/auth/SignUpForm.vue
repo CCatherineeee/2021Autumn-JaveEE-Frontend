@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div style="width: 100%;height: 100%;" class="banner-view">  
+  <div style="width: 100%;height: 100%;" class="banner-view">
   </div>
     <section class="content">
 
@@ -8,7 +8,7 @@
         <el-form-item label="Name" prop="name">
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
-        
+
         <el-form-item label="Email" prop="email">
           <el-input v-model="ruleForm.email"></el-input>
         </el-form-item>
@@ -29,8 +29,8 @@
 
         </div>
       </el-form>
-   
-      
+
+
     </section>
   </div>
 </template>
@@ -65,7 +65,10 @@ export default {
     submitForm(){
       //TODO 检查email合法性
       //TODO 检查密码复杂性
-
+      if(this.ruleForm.email === "" || this.ruleForm.name === "" || this.ruleForm.password === ""){
+        this.$message("Please Finish Your Account")
+        return
+      }
       register(JSON.stringify(this.ruleForm))
       .then((res)=>{
         if(res.data.code==402){
@@ -87,7 +90,7 @@ export default {
         }
 
       })
-        
+
     },
 
     resetForm(){
@@ -96,7 +99,7 @@ export default {
         this.ruleForm.name='';
         console.log('清空表单');
     }
-        
+
     }
   }
 
@@ -144,7 +147,7 @@ font-weight: 600;
       margin: 5px 0 3px 0;
       width: 100%;
     }
-  
+
 
   .form-container .fs-caption {
     color:#6a737c;
