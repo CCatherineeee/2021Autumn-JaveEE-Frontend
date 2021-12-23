@@ -1,30 +1,46 @@
 <template>
-    <div ref="searchContainer" class="search-container">
-        <div class="mb24 search-box">
-            <div v-if="has_q" >Search Results</div>
-            <div v-else >Search</div>
-            <div class="ask-questions">
-                <div class="advanced">
-                    <a href="#" class="js-advanced-tips-toggle">Advanced Search Tips</a>
-                </div>
-                <div class="ask-new-question" role="navigation" aria-label="ask new question">
-                    <a href="/questions/ask" style="font-size: 14px;" class="s-btn">Ask Question</a>
-                </div>
+  <div>
+    <div v-if="num!== '0'">
+      <h1>Got {{num}} Results For You</h1>
+      <div v-for="(item,index) in questionList" :key="index">
+      <el-container class='posts'>
+        <el-aside style="width: 80px">
+          <div class='stats-container'>
+            <div class='stats'>
+              <div class='vote'>
+                <span class='vote-count'>{{item.views}}</span>
+                <div class='count-text'>views</div>
+              </div>
+
+              <div class='vote' v-if="item.acceptId === null">
+                <span class='vote-count'>{{item.answerNum}}</span>
+                <div class='count-text'>answers</div>
+              </div>
+
+              <div class='vote answer' v-else>
+                <span class='vote-count fc-green-500'>{{item.answerNum}}</span>
+                <div class='count-text'>answers</div>
+              </div>
+
             </div>
-        </div>
-        <div v-if="has_q" class="displaying-results">
-            <span class="mr2">results found containing</span>
-            <span class="displaying-results-highlight">{{words}}</span>
-        </div>
-        <div class="bigsearch-inner">
-            <input v-model="keyWords" name="q" class="s-input" type="text" maxlength="140" size="80">
-            <button @click="getResults(keyWords, 'current')" class="search-btn">search</button>
-        </div>
-
-        <!---rearch-results-->
-        <q-results v-if="has_q" v-on:filter-by="filterBy" ref="Results" :q="keyWords" :results="resultsObj" :has_results="hasResults"></q-results>
-
+          </div>
+        </el-aside>
+        <el-main>
+          <div class='summary'>
+            <el-link :underline="false" style="font-size: large;color: #1e7cf0" @click="skipToQuestion(item.questionId)">{{item.title}}</el-link>
+            <br />
+            <br />
+            <div v-html="formatImag(item.description)"></div>
+            <br />
+          </div>
+        </el-main>
+      </el-container>
     </div>
+    </div>
+    <div v-else>
+      <h1>Sorry, there is no result for you</h1>
+    </div>
+  </div>
 </template>
 <script>
 import qResults from '../../components/common/qResults'
@@ -40,12 +56,13 @@ export default {
     },
     data () {
         return {
-            hasValue: false,
-            keyWords: '',
-            has_q: false,
-            hasResults: false,
-            words: '',
-            resultsObj: {}
+          hasValue: false,
+          keyWords: '',
+          has_q: false,
+          hasResults: false,
+          words: '',
+          questionList: [],
+          num:0
         }
     },
     methods: {
@@ -58,13 +75,45 @@ export default {
                 "x-auth-token":localStorage.getItem('token')
               }
             })
-            .then(function (res) {
-                console.log(res)
+            .then( (res) => {
+              if(res.data.code === 200)
+              {
+                this.questionList = JSON.parse(res.data.data.questions)
+                console.log(this.questionList)
+                this.num = res.data.data.validnumber
+                if(res.data.data.validnumber === 0){
+                  this.has_q = false
+                }
+                else
+                  this.has_q = true
+              }
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log(error);
+                this.$message("Net Error")
             })
         },
+      formatImag (content) {
+        return content.replace(/<img/g, "<img style='max-width:60%;height:auto;'")
+      },
+      getMyTime (time) {
+        var d = new Date(time)
+        // eslint-disable-next-line camelcase
+        var cur_d = new Date()
+        // eslint-disable-next-line camelcase
+        var diff = (cur_d - d) / 1000
+
+        var days = parseInt(diff / 86400) // 天  24*60*60*1000
+        var hours = parseInt(diff / 3600) - 24 * days // 小时 60*60 总小时数-过去的小时数=现在的小时数
+        var minutes = parseInt(diff % 3600 / 60) // 分钟 -(day*24) 以60秒为一整份 取余 剩下秒数 秒数/60 就是分钟数
+        if (days === 0 && hours === 0) { return minutes.toString() + ' minutes ago' } else if (days === 0) { return hours.toString() + ' hours ago' } else { return days.toString() + ' days ago' }
+      },
+      skipToAsk () {
+        this.$router.push({name: 'askQuestion'})
+      },
+      skipToQuestion (id) {
+        this.$router.push({path: '/question', query: {'id': id}})
+      },
     },
   mounted () {
     this.getRsList()
@@ -186,5 +235,59 @@ export default {
     .search-container {
         width: 100%;
     }
+}
+.posts {
+  padding: 12px 8px 12px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  border-bottom: 1px solid #4a4e51;
+}
+.stats-container {
+  margin-right: 16px;
+  width: 58px;
+  color: #6a737c;
+  margin-left: 8px;
+  font-size: 11px;
+}
+.vote {
+  padding: 0;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.vote-count {
+  font-size: 20px;
+}
+
+.count-text {
+  font-size: 12px;
+}
+
+.answer {
+  color: #63b47c;
+  border: 1px solid #63b47c;
+  border-radius: 3px;
+}
+
+.owner {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 3px;
+  background-color: #f2f3f3;
+  text-align: left;
+  vertical-align: top;
+  width: 200px;
+  height: 50px;
+}
+.user-block {
+  box-sizing: border-box;
+  padding: 5px 6px 0 7px;
+  color: #6a737c;
+}
+.action-time {
+  margin-top: 1px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  white-space: nowrap;
 }
 </style>

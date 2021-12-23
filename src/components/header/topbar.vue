@@ -18,8 +18,8 @@
           @input="watchInput"
           @blur="hideSubmit()"
           @focus="focus()"
-          placeholder="Search…"
-          maxlength="240"
+          placeholder="Input Keywords and [tag] to Search"
+          maxlength="250"
         />
         <button @click="goSearch()" id="submit" type="button">
           <svg
@@ -245,12 +245,13 @@ export default {
       this.searchCode = "";
     },
     goSearch() {
-      console.log(this.searchCode);
+      // console.log(this.searchCode);
       bus.$emit("message-search", this.searchCode);
       this.$router.push({
         path: "/search",
         query: { searchCode: this.searchCode },
       });
+      location.reload();
     },
     goLogin() {
       publicModule.goArouter(this, "/login");
@@ -269,7 +270,6 @@ export default {
       document.querySelector(".input-search").style.boxShadow = "";
     },
     focus() {
-      console.log(this.searchCode);
       document.querySelector("#submit").style.opacity = "1";
       document.querySelector(".input-search").style.border =
         "1px solid #1997fc";

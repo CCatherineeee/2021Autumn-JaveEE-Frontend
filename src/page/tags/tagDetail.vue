@@ -11,8 +11,8 @@
     <el-col span="4"><el-button type="primary"  @click="followTag()" v-if="isFollow === false">Follow Tag</el-button></el-col>
     <el-col span="4"><el-button type="primary"  @click="disfollowTag()" v-if="isFollow === true">Disfollow Tag</el-button></el-col>
 
-    <el-col span="4"><el-button type="primary"  @click="ignoreTag()" v-if="isIgnore === true && isFollow === false">Ignore Tag</el-button></el-col>
-    <el-col span="4"><el-button type="primary"  @click="disignoreTag()" v-if="isIgnore === false && isFollow === false">DisIgnore Tag</el-button></el-col>
+    <el-col span="4"><el-button type="primary"  @click="ignoreTag()" v-if="isIgnore === false && isFollow === false">Ignore Tag</el-button></el-col>
+    <el-col span="4"><el-button type="primary"  @click="disignoreTag()" v-if="isIgnore === true && isFollow === false">DisIgnore Tag</el-button></el-col>
 
     <el-col span="6"><el-button type="primary"  @click="dialogVisible = true">Edit Tag Description</el-button></el-col>
     <el-col span="4"><el-button type="primary"  @click="skipToAsk()">Ask Question</el-button></el-col>

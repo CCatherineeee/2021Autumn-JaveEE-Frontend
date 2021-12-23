@@ -189,7 +189,7 @@ export default {
   },
   methods:{
     getUserInfo(){
-      this.$axios.get("/api/api/users/info",{
+      this.$axios.get("/api/users/info",{
         params:{
           userid: this.userId
         }
@@ -217,6 +217,8 @@ export default {
     },
   },
   mounted () {
+    this.userId = this.$route.query.id
+    console.log(this.userId)
     this.getUserInfo()
   }
 }

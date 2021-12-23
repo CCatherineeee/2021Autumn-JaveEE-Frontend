@@ -4,13 +4,13 @@
       <div @click="closeDialog" class="closeImg"></div>
       <div class="reputationChange">
         <div v-for="(item, index) in reputationList" :key="index">
-          <div class="reputationEl">{{ item.description }}</div>
+          <div class="reputationEl" style="text-align: center;">{{ item.description }}</div>
         </div>
       </div>
     </div>
   </div>
 </template>
- 
+
 <script>
 import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
@@ -61,7 +61,7 @@ export default {
   },
 };
 </script>
- 
+
 <style scoped>
 #dialog {
   position: fixed;
