@@ -253,10 +253,7 @@ export default {
     this.tagId = this.$route.query.id
     var params = new URLSearchParams()
     params.append('id', this.tagId)
-    this.$axios.post('/api/tag/addTagViews', params).then((res) => {
-      console.log(res)
-      this.getTagInfo()
-    })
+    this.getTagInfo()
   }
 }
 </script>
