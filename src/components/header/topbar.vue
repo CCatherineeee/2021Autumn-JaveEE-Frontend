@@ -56,11 +56,17 @@
                     </svg>
                 </a>
             </li>
+<<<<<<< HEAD
             <li class="-ctas">
                 <a v-if="isLogin" href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
                 <a v-if="isLogin" href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
               <a v-else href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Log Out</a>
 
+=======
+            <li class="-ctas" v-if="show">
+                <a href="javascript:void(0)" class="login s-btn btn-topbar-clear py8" rel="nofollow" @click="goLogin">Log In</a>
+                <a href="javascript:void(0)" class="sign-up s-btn s-btn__primary py8 btn-topbar-primary" rel="nofollow" @click="goSignUp">Sign Up</a>
+>>>>>>> c04af55a1e735e54f5ee340cbe214ef92c5dd37d
             </li>
         </ul>
     </header>
@@ -82,6 +88,15 @@ export default {
         '$route': function(to, from) {
             console.log(to)
             //     this.searchCode = ''
+        },
+        'token':function(newVal,oldVal){
+            if(newVal==null){
+                this.show=true;
+                console.log('未登录 ，显示');
+            }else{
+                this.show=false;
+                console.log('一登录，不显示');
+            }
         }
     },
     mounted () {
