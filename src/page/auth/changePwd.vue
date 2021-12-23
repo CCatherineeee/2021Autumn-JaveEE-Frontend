@@ -201,6 +201,7 @@ export default {
             if(res.data.code==200){
               this.$store.commit('changeLogin', res.data.data.token, res.data.data.id)// 存储token
               this.$router.push("/");
+              location.reload()
             }else{
               this.$message({
                 message:"内部错误",
