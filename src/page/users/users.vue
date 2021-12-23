@@ -16,26 +16,25 @@
           </div>
 
           <el-button-group  style="display:inline-block;">
-            <el-button type="text"  @focus="handleSortBy(7)">week</el-button>
-            <el-button type="text" @focus="handleSortBy(0)">month</el-button>
-            <el-button type="text" @focus="handleSortBy(1)" autofocus=true >all</el-button>
+            <el-button type="text"  @click="handleSortBy('7')" :class="[sortType==7?'s-filter-active':'s-filter']">week</el-button>
+            <el-button type="text" @click="handleSortBy('0')" :class="[sortType==0?'s-filter-active':'s-filter']">month</el-button>
+            <el-button type="text" @click="handleSortBy('1')" autofocus=true :class="[sortType==1?'s-filter-active':'s-filter']">all</el-button>
 
           </el-button-group>
           </div>
         </div>
 
       <div >
-        <div >
+        <div class="s-users">
         <el-row v-for="r in rowNums" :key="r" :gutter="20">
           <el-col :span="6"
             >
             <el-card class="box-card">
-              <!-- TODO 姓名连接到用户主页-->
               <div  :ref="rowItems * (r - 1)" class="text item">
-                typeList[rowItems * (r - 1)].userName
+                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)].userId)">typeList[rowItems * (r - 1)].userName</el-button>               
               </div>
 
-              <div  :ref="rowItems * (r - 1)" class="text item">
+              <div  :ref="rowItems * (r - 1)" class="text item reputation-score">
                 typeList[rowItems * (r - 1)].reputation
               </div>
             </el-card></el-col
@@ -43,11 +42,11 @@
           <el-col :span="6"
             >
             <el-card class="box-card" v-if="rowItems * (r - 1) + 1<typeList.length">
-              <div  :ref="rowItems * (r - 1)+1" class="text item">
-                typeList[rowItems * (r - 1)+1].userName
+              <div  :ref="rowItems * (r - 1)+1" class="text item ">
+                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+1].userId)">typeList[rowItems * (r - 1)].userName</el-button>               
               </div>
 
-              <div  :ref="rowItems * (r - 1)+1" class="text item">
+              <div  :ref="rowItems * (r - 1)+1" class="text item reputation-score">
                 typeList[rowItems * (r - 1)+1].reputation
               </div>
             </el-card></el-col
@@ -56,10 +55,10 @@
             >
             <el-card class="box-card" v-if="rowItems * (r - 1) + 2<typeList.length">
               <div  :ref="rowItems * (r - 1)+2" class="text item">
-                typeList[rowItems * (r - 1)+2].userName
+                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+2].userId)">typeList[rowItems * (r - 1)].userName</el-button>               
               </div>
 
-              <div  :ref="rowItems * (r - 1)+2" class="text item">
+              <div  :ref="rowItems * (r - 1)+2" class="text item reputation-score">
                 typeList[rowItems * (r - 1)+2].reputation
               </div>
             </el-card></el-col
@@ -68,10 +67,10 @@
             >
              <el-card class="box-card" v-if="rowItems * (r - 1) + 3<typeList.length">
               <div  :ref="rowItems * (r - 1)+3" class="text item">
-                typeList[rowItems * (r - 1)+3].userName
+                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+3].userId)">typeList[rowItems * (r - 1)].userName</el-button>               
               </div>
 
-              <div  :ref="rowItems * (r - 1)+3" class="text item">
+              <div  :ref="rowItems * (r - 1)+3" class="text item reputation-score">
                 typeList[rowItems * (r - 1)+3].reputation
               </div>
             </el-card></el-col
@@ -97,7 +96,9 @@
 
 <script>
 import {getUsers} from  '@/api/users'
-import {searchUser} from '@/api/users'
+import {searchUsers} from '@/api/users'
+import {getUsersCount} from '@/api/users'
+import {getSearchCount} from '@/api/users'
 
 export default {
   components: {
@@ -111,6 +112,8 @@ export default {
       typeList:["a",'b','c','d','e','f'],
       rowItems:4,
       curPage:1,
+
+      itemNum:0,
     }
   },
 
@@ -119,14 +122,17 @@ export default {
       return Math.ceil(this.typeList.length / 4);
     },
 
-    itemNum:function(){
-      return this.typeList.length;
-    }
+   
   },
 
   methods: {
+    clickUser(id){
+      this.$router.push({path:'/user',query:{id:id}});
+      
+    },
     handleSortBy(type){
-      this.sortType=type;
+      console.log('新改变的type：',type)
+      this.sortType=Number(type);
 
       args:{
         tab:"Reputation";
@@ -134,6 +140,25 @@ export default {
         duration:this.sortType
 
       };
+
+      arg:{
+         tab:"Reputation";
+        duration:this.sortType;
+      }
+
+      getUsersCount(arg)
+      .then((res)=>{
+        if(res.data.code==200){
+          this.itemNum=res.data.data;
+        }else{
+          this.itemNum=0;
+          this.$message({
+            message:"内部错误",
+            type:"error"
+          })
+        }
+      })
+      
       getUsers(args)
       .then((res)=>{
         if(res.data.code==200){
@@ -148,6 +173,17 @@ export default {
     },
 
     handleSearch(){
+      getSearchCount(this.inputName)
+      .then((res)=>{
+        if(res.data.code==200){
+          this.itemNum=res.data.data;
+        }else{
+           this.$message({
+            message:"内部错误",
+            type:"error"
+          })
+        }
+      })
       searchUsers(this.inputName)
       .then((res)=>{
         if(res.data.code==200){
@@ -187,8 +223,30 @@ export default {
 
 <style scoped>
 .s-filter{
+    display: block;
+    margin: 0 0 0 2px;
+    padding: 8px;
+    border-bottom: 1px solid transparent;
+    color: black;
+    font-size: 12px;
+    line-height: 1.92307692;
+    text-decoration: none;
+    transition: all 150ms cubic-bezier(.19, 1, .22, 1);
   
 }
+
+.reputation-score {
+    font-weight: bold;
+    font-size: 12px;
+    margin-right: 2px;
+}
+
+.s-filter-active{
+      /* border-color: green; */
+      border-bottom: 1px solid transparent;
+    font-weight: 700;
+}
+
 .subheader{
   clear: both;
   /* margin-bottom: 10px; */
@@ -199,6 +257,9 @@ export default {
   font-size: 2em;
   font-weight: 100;
   
+}
+.s-users{
+  margin-top:20px;
 }
 
 .s-label {

@@ -5,9 +5,10 @@
         Account Recovery
         <el-divider></el-divider>
       </div>
-    </el-header>
+    </el-header >
+    <div style="overflow-y:scroll;height:300px">
     <!-- TODO: footer置地-->
-        <el-footer v-if="valid">
+        <el-footer v-if="valid" >
           <div style="margin-top:10px;margin-bottom:10px">Recover account for {{mail}} </div>
           <el-form :rules="rules">
             <el-form-item prop="newPwd">
@@ -32,7 +33,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="submitForm()">Recover Account</el-button>
+              <el-button type="primary" @click="submitForms()">Recover Account</el-button>
             </el-form-item>
 
             <div className='fs-caption license '>
@@ -48,6 +49,7 @@
         该链接已失效
         </el-footer>
     <el-aside></el-aside>
+    </div>
   </el-container>
 
 </template>
@@ -69,7 +71,7 @@ export default {
   },
   data () {
     return {
-      invalidAction:true,
+      invalidAction:false,
       valid:true,
       mail:"",
       newPwd:"",
@@ -77,46 +79,48 @@ export default {
 
       rules:{
         newPwd:[
-          {required: true, message: '请输入密码', trigger: 'blur'},
-          {
-            type: 'string',
-            message: '请输入不包含空格的字符',
-            trigger: 'blur',
-            transform(value) {
-              if (value && value.indexOf(' ') === -1) {
-                return value
-              } else {
-                return false
-              }
-            }
-          },
+          {required: false, message: '请输入密码', trigger: 'blur'},
+        //   {
+        //     type: 'string',
+        //     message: '请输入不包含空格的字符',
+        //     trigger: 'blur',
+        //     transform(newPwd) {
+        //       if (newPwd && newPwd.indexOf(' ') === -1) {
+        //         return newPwd
+        //       } else {
+        //         console.log("value",newPwd)
+        //         console.log('this',this.newPwd)
+        //         return false
+        //       }
+        //     }
+        //   },
 
-          {
-        trigger: 'blur',
-        validator: (value, callback) => {
-          var passwordreg = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,16}/
-          if (!passwordreg.test(value)) {
-            callback(new Error('密码必须由数字、字母、特殊字符组合,请输入6-16位'))
-          }else{
-            callback()
-          }
-        } }
+        //   {
+        // trigger: 'blur',
+        // validator: (value, callback) => {
+        //   var passwordreg = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,16}/
+        //   if (!passwordreg.test(value)) {
+        //     callback(new Error('密码必须由数字、字母、特殊字符组合,请输入6-16位'))
+        //   }else{
+        //     callback()
+        //   }
+        // } }
 
 
         ],
         copyNewPwd:[
-            {required: true, message: '请输入密码', trigger: 'blur'},
-            {
-               trigger: 'blur',
-                validate: (value, callback) => {
-                 if(this.newPwd!=this.copyNewPwd){
-                   callback(new Error('新旧密码必须相同'))
-                 }
-                 else{
-                    callback()
-          }
-        } 
-            }
+            {required: false, message: '请输入密码', trigger: 'blur'},
+        //     {
+        //        trigger: 'blur',
+        //         validate: (value, callback) => {
+        //          if(this.newPwd!=this.copyNewPwd){
+        //            callback(new Error('新旧密码必须相同'))
+        //          }
+        //          else{
+        //             callback()
+        //   }
+        // } 
+        //     }
 
         ]
       }
@@ -126,29 +130,59 @@ export default {
 //TODO 怎么不执行
   mounted(){
     // 检查连接是否有效
-    console.log(this.$route.params.token)
-    console.log(this.$route.query)
-    let id=this.$route.query.token
-      checkURL(id)
-      .then((res)=>{
-        if(res.data.code==200){
-          console.log('连接有效')
-          this.valid=true;
-          this.mail=res.data.data.email;
-        }else{
-          console.log('连接失效！')
-        }
+    // console.log("路由",this.$route)
+    // console.log(this.$route.params.token)
+    // console.log(this.$route.query)
+    // let id=this.$route.query.token
+    //   checkURL(id)
+    //   .then((res)=>{
+    //     if(res.data.code==200){
+    //       console.log('连接有效')
+    //       this.valid=true;
+    //       this.mail=res.data.data.email;
+    //     }else{
+    //       console.log('连接失效！')
+    //     }
 
-      })
+    //   })
   },
   methods: {
-    submitForm(){
-      this.checkURL()
-      .then((res)=>{
-        if(res.data.code==500){
-          this.invalidAction=true;
-        }
-      })
+    validateInput(value){
+      var passwordreg = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,16}/
+          if (!passwordreg.test(value)) {
+            this.$message({
+          message:'密码必须由数字、字母、特殊字符组合,请输入6-16位',
+          type:"error"
+        })
+        return false;
+          }else{
+            return true;
+          }
+    },
+    checkInput(){
+      if(this.newPwd==""||this.copyNewPwd==""){
+        this.$message({
+          message:"请输入密码",
+          type:"error"
+        });
+      }else if(this.newPwd!=this.copyNewPwd){
+        this.$message({
+          message:"新旧密码必须相同",
+          type:"error"
+        })}else{
+          this.validateInput(this.newPwd);
+        };
+      }
+    },
+    submitForms(){
+      // checkURL()
+      // .then((res)=>{
+      //   if(res.data.code==500){
+      //     this.invalidAction=true;
+      //   }
+      // })
+
+      this.checkInput()
 
       
 
@@ -157,39 +191,39 @@ export default {
         newPwd:this.newPwd
       };
 
-      resetPwd(formData)
-      .then((res)=>{
-        if(res.data.code==200){
-          args={
-            "mailaddr":this.email,
-            "password":this.newPwd
-          }
-          this.login(args)
-          .then((res)=>{
-            if(res.data.code==200){
-              this.$store.commit('changeLogin', res.data.data.token, res.data.data.id)// 存储token
-              this.$router.push("/");
-            }else{
-              this.$message({
-                message:"内部错误",
-                type:"error"
-              })
-            }
+      // resetPwd(formData)
+      // .then((res)=>{
+      //   if(res.data.code==200){
+      //     args={
+      //       "mailaddr":this.email,
+      //       "password":this.newPwd
+      //     }
+      //     this.login(args)
+      //     .then((res)=>{
+      //       if(res.data.code==200){
+      //         this.$store.commit('changeLogin', res.data.data.token, res.data.data.id)// 存储token
+      //         this.$router.push("/");
+      //       }else{
+      //         this.$message({
+      //           message:"内部错误",
+      //           type:"error"
+      //         })
+      //       }
 
-          });
-        }else{
-          this.$message({
-            message:"内部错误",
-            type:"error"
-          })
-        }
+      //     });
+      //   }else{
+      //     this.$message({
+      //       message:"内部错误",
+      //       type:"error"
+      //     })
+      //   }
         
-      });
+      // });
 
     }
     
   }
-}
+
 </script>
 
 <style scoped>
