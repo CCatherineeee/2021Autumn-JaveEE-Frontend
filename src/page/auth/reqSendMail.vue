@@ -3,14 +3,28 @@
   <div style="width: 100%;height: 100%;" class="banner-view">
   </div>
     <section class="content">
-      <div class="register-content">
-        <div v-if="succ">
-          <h1>
-            恭喜你成功发送邮件啦！！！！
-          </h1>
 
-        </div>
+      <div class="register-content">
+        <div v-if="succ" className='register-grid'>
+         
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="50px" class="my-form" >
+            <el-form-item class="s-notice">
+              <div style="margin-top:20px">
+            <h1>Account recovery email sent to {{this.ruleForm.mailAddr}}</h1>
+            </div>
+            <div style="margin:auto 0">
+            <br>
+            If you don’t see this email in your inbox within 15 minutes, look for it in your
+            <br>
+             junk mail folder. If you find it there, please mark it as “Not Junk”.
+             </div>
+            </el-form-item>
+          </el-form>
+
+          </div>
         <div className='register-grid' v-else>
+          <caption/>
+          <div class="form-container">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 Forgot your account’s password ?
                 Enter your email address and we’ll send you a recovery link.
@@ -24,6 +38,7 @@
             </el-form-item>
 
             </el-form>
+            </div>
         </div>
       </div>
 
@@ -33,12 +48,14 @@
 
 <script>
 import { reqSendMail } from "@/api/auth";
+import Caption from '../../components/auth/Caption.vue'
+
 
 export default { 
 
     data(){
         return {
-          succ:false,
+          succ:true,
             ruleForm:{
                 mailaddr:'',
             },
@@ -81,6 +98,26 @@ export default {
 </script>
 
 <style scoped>
+.h-notice{
+  font-size: 1.30769231rem !important;
+  margin-bottom: 8px !important;
+  display: flex;
+}
+
+.s-notice{
+  padding: 16px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: var(--fc-medium);
+    font-size: 13px;
+}
+.my-form{
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  background-color:#b7f0c5;
+  opacity: 0.7;
+}
+
 .form-container  {
   width: 320px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 20px 48px rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.1);
@@ -88,7 +125,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 24px;
-  background-color: #2d2d2d;
+  background-color: #f7f3f3e1;
   border-radius: 7px;
   box-sizing: inherit;
   display: block;
@@ -128,6 +165,21 @@ export default {
     width: 45px;
     height: 45px;
   }
+.register-content {
+  width: 100vw;
+  background-color: transparent;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90.7vh;
+}
+
+.register-grid  {
+  display: flex;
+  align-items: center;
+  box-sizing: inherit;
+}
 
 .redirects {
   padding: 16px 16px 0 16px;

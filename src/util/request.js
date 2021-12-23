@@ -5,11 +5,11 @@ import store from '@/store'
 
 // 每次请求携带cookies信息
 axios.defaults.headers.post['Content-Type'] = 'application/json',
-axios.defaults.withCredentials = true
+  axios.defaults.withCredentials = true
 
 // create an axios instance
 const service = axios.create({
-  baseURL: 'http://localhost:5050/',
+  baseURL: 'http://localhost:8080/api/',
   timeout: 50000, // request timeout
   async: true,
   crossDomain: true

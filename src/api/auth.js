@@ -9,7 +9,7 @@ return request({
     method: 'post',
     data:data
 })
-}
+
 
 
 // 注册
@@ -18,33 +18,34 @@ export function register(data) {
     return request({
         url: '/api/api/register',
         method: 'post',
-        data:data
+        data: data
     })
-    }
+}
 
 // 修改密码
 export function resetPwd(data) {
     return request({
         url: '/api/api/users/resetPwd',
         method: 'post',
-        data:data
+        data: data
     })
 }
 
 // 请求发送邮件
-export function reqSendMail(data){
+export function reqSendMail(data) {
     return request({
         url: '/api/api/users/reqSendLink',
         method: 'get',
-        params:data
+        params: data
     })
 }
 
 // 检查邮件连接是否有效
-export function checkURL(data){
+export function checkURL(data) {
     return request({
         url: '/api/api/users/recover',
         method: 'get',
-        params:data
+        params: data
     })
+}
 }

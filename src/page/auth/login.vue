@@ -5,6 +5,7 @@
     <section class="content">
       <div class="register-content">
         <div className='register-grid'>
+        <caption/>
         <auth-form class="form-container"></auth-form>
         </div>
       </div>
@@ -15,6 +16,8 @@
 
 <script>
 import AuthForm from '../../components/auth/AuthForm.vue'
+import Caption from '../../components/auth/Caption.vue'
+
 
 export default {
   components: { AuthForm },
@@ -82,6 +85,22 @@ export default {
   margin-bottom: 24px;
 }
 
+.register-content {
+  width: 100vw;
+  background-color: transparent;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90.7vh;
+}
+
+.register-grid  {
+  display: flex;
+  align-items: center;
+  box-sizing: inherit;
+}
+
 @media (max-width: 799px) {
   .register-grid {
     flex-direction: column;
@@ -89,7 +108,7 @@ export default {
   }
   .register-content {
     height: auto;
-    margin: auto 0;
+    margin: auto 0px;
   }
 }
 </style>

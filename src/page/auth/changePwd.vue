@@ -1,55 +1,62 @@
 <template>
   <el-container>
     <el-header>
-         <div class="jobs-container">
-      <el-row >
-        <el-col :span="20"><h1>Account Recovery</h1></el-col>
-      </el-row>
-          <el-divider></el-divider>
-
-
-    </div>
+      <div class="subheader">
+        Account Recovery
+        <el-divider></el-divider>
+      </div>
     </el-header>
-    <el-main>
-      
-        <el-container v-if="valid">
-          Recover account for {{mail}} 
+    <!-- TODO: footer置地-->
+        <el-footer v-if="valid">
+          <div style="margin-top:10px;margin-bottom:10px">Recover account for {{mail}} </div>
+          <el-form :rules="rules">
+            <el-form-item prop="newPwd">
+              <div class="s-label"> 
+              <label >New password</label>
+              </div>
+              <el-input class="s-input" v-model="newPwd"></el-input>
+            </el-form-item>
+            <el-form-item  prop="copyNewPwd">
+              <div class="s-label">
+              <label >New password (again)</label>
+              </div>
+                <el-input class="s-input" v-model="copyNewPwd"></el-input>
+                <p style="s-p">Passwords must contain at least eight characters, including at least 1 letter and 1 number.</p>
+            </el-form-item>
 
-        <el-form :rules="rules">
-           <el-form-item label="New password" prop="newPwd">
-          <el-input v-model="newPwd"></el-input>
-        </el-form-item>
+            <el-form-item v-if="invalidAction">
+              这个链接已经过期了额，请重新点击发送！
+              <el-link  href="http://localhost:8080/#/api/users/account-recovery/change-pwd">从新发送邮件</el-link>.
+              <link>
 
-        <el-form-item label="New password (again)" prop="copyNewPwd">
-            <el-input v-model="copyNewPwd"></el-input>
-        </el-form-item>
+            </el-form-item>
 
-        <el-form-item v-if="invalidAction">
-          这个链接已经过期了额，请重新点击发送！
-          <el-link  href="http://localhost:8080/#/api/users/account-recovery/change-pwd">从新发送邮件</el-link>.
-          <link>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm()">Recover Account</el-button>
+            </el-form-item>
 
-        </el-form-item>
+            <div className='fs-caption license '>
+                By clicking "Recover Account", you agree to our
+                <el-link  href="https://stackoverflow.com/legal/terms-of-service/public" class="my-link"> terms of service</el-link>,
+                <el-link  href="https://stackoverflow.com/legal/privacy-policy"  class="my-link">  privacy policy</el-link> and
+                <el-link  href="https://stackoverflow.com/legal/cookie-policy"  class="my-link"> cookie policy</el-link>.
+            </div>
+          </el-form>
+        </el-footer>
 
-        <el-form-item>
-          <el-button type="primary" @click="submitForm()">Recover Account</el-button>
-        </el-form-item>
-        </el-form>
-        </el-container>
-
-        <el-container v-else>
+        <el-footer v-else>
         该链接已失效
-      </el-container>
-    </el-main>
+        </el-footer>
     <el-aside></el-aside>
-
   </el-container>
+
 </template>
 
 <script>
 import {resetPwd} from '@/api/auth'
 import {checkURL} from '@/api/auth'
 import {login} from '@/api/auth'
+
 
 import { quillEditor } from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
@@ -186,7 +193,44 @@ export default {
 </script>
 
 <style scoped>
+.subheader{
+  clear: both;
+  /* margin-bottom: 10px; */
+  height: 40px;
+  padding-bottom: 0;
+  /* border-bottom: 1px solid var(--black-075); */
+  box-sizing: content-box;
+  font-size: 2em;
+  font-weight: 100;
+    
+}
+.s-p{
+  font-size: 12px !important;
+  color: var(--fc-light) !important;
+      margin-bottom: 4px !important;
+      margin-top: 4px !important;
+      width:50%
+}
 
+.s-label {
+    padding: 0 0px;
+    color: var(--fc-dark);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.s-input  {
+    -webkit-appearance: none;
+    width: 50%;
+    margin: 0;
+    padding: .6em .7em;
+    border: 1px solid var(--bc-darker);
+    border-radius: 3px;
+    background-color: var(--white);
+    color: var(--fc-dark);
+    font-size: 13px;
+    font-family: inherit;
+}
   .post-form-header {
     height: 130px;
     background-image: url("https://cdn.sstatic.net/img/ask/background.svg?v=2e9a8205b368");

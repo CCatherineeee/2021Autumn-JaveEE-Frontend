@@ -14,18 +14,18 @@
         </el-form-item>
 
         <el-form-item label="Password" prop="password">
-            <el-input v-model="ruleForm.password"></el-input>
+            <el-input type="password" v-model="ruleForm.password"></el-input>
         </el-form-item>
 
         <el-form-item>
-        <el-button type="primary" @click="submitForm()">Sign Up</el-button>
+        <el-button type="primary" class="mybtn" @click="submitForm()">Sign Up</el-button>
     </el-form-item>
 
         <div className='fs-caption license '>
-            By clicking "Log in", you agree to our
-            <el-link  href="https://stackoverflow.com/legal/terms-of-service/public"> terms of service</el-link>,
-            <el-link  href="https://stackoverflow.com/legal/privacy-policy">  privacy policy</el-link> and
-            <el-link  href="https://stackoverflow.com/legal/cookie-policy"> cookie policy</el-link>.
+            By clicking "Sign up", you agree to our
+            <el-link  href="https://stackoverflow.com/legal/terms-of-service/public" class="my-link"> terms of service</el-link>,
+            <el-link  href="https://stackoverflow.com/legal/privacy-policy" class="my-link">  privacy policy</el-link> and
+            <el-link  href="https://stackoverflow.com/legal/cookie-policy" class="my-link"> cookie policy</el-link>.
 
         </div>
       </el-form>
@@ -37,6 +37,7 @@
 
 <script>
 import {register} from '@/api/auth'
+
 export default {
   data(){
     return {
@@ -107,7 +108,10 @@ export default {
     color:#6a737c;
     font-size: 12px;
   }
+.mybtn{
+  margin:auto 40px;
 
+}
 .fs-caption .license {
 margin-top: 32px;
 }
@@ -115,6 +119,9 @@ margin-top: 32px;
 font-weight: 600;
 }
 
+.my-link{
+  color:rgb(91, 152, 231)
+}
 
 .form-container  {
   width: 320px;
@@ -123,7 +130,7 @@ font-weight: 600;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 24px;
-  background-color: #2d2d2d;
+  background-color: #f7f3f3e1;
   border-radius: 7px;
   box-sizing: inherit;
   display: block;
