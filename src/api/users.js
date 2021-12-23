@@ -4,7 +4,7 @@ import request from '@/util/request'
 export function getUsers(data) {
 
     return request({
-        url: '/api/api/users/square',
+        url: '/api/users/square',
         method: 'get',
         data: data
     })
@@ -14,7 +14,7 @@ export function getUsers(data) {
 export function getUsersCount(data) {
 
     return request({
-        url: '/api/api/users/square-count',
+        url: '/api/users/square-count',
         method: 'get',
         data:data
     })

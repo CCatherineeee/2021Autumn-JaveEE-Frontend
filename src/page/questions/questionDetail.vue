@@ -16,9 +16,16 @@
               ></el-tag
             >
           </el-col>
-          <el-col v-if="isFollow" span="4"><el-button type="primary" @click="followQuestion">Follow Question</el-button></el-col>
-          <el-col v-else span="4"><el-button type="primary" @click="disfollowQuestion">Follow Question</el-button></el-col>
-
+          <el-col v-if="isFollow" span="4"
+            ><el-button type="primary" @click="followQuestion"
+              >Follow Question</el-button
+            ></el-col
+          >
+          <el-col v-else span="4"
+            ><el-button type="primary" @click="disfollowQuestion"
+              >Follow Question</el-button
+            ></el-col
+          >
         </el-row>
       </div>
       <p>
@@ -36,15 +43,21 @@
                 <div class="stats">
                   <div class="vote-count" style="text-align: center">
                     <button class="" @click="voteEvent('agree', 'Question')">
-                      <svg
-                        aria-hidden="true"
-                        class="svg-icon iconArrowUpLg"
-                        width="36"
-                        height="36"
-                        viewBox="0 0 36 36"
+                      <a
+                        href="javascript:void(0)"
+                        class="-link"
+                        title="This question shows research effort; it is useful and clear"
                       >
-                        <path d="M2 26h32L18 10 2 26Z"></path>
-                      </svg>
+                        <svg
+                          aria-hidden="true"
+                          class="svg-icon iconArrowUpLg"
+                          width="36"
+                          height="36"
+                          viewBox="0 0 36 36"
+                        >
+                          <path d="M2 26h32L18 10 2 26Z"></path>
+                        </svg>
+                      </a>
                     </button>
                     <div
                       class="vote-count"
@@ -54,15 +67,21 @@
                       {{ questionInfo.agreeVoting - questionInfo.rejectVoting }}
                     </div>
                     <button class="" @click="voteEvent('reject', 'Question')">
-                      <svg
-                        aria-hidden="true"
-                        class="svg-icon iconArrowDownLg"
-                        width="36"
-                        height="36"
-                        viewBox="0 0 36 36"
+                      <a
+                        href="javascript:void(0)"
+                        class="-link"
+                        title="This question does not show any research effort; it is unclear or not useful"
                       >
-                        <path d="M2 10h32L18 26 2 10Z"></path>
-                      </svg>
+                        <svg
+                          aria-hidden="true"
+                          class="svg-icon iconArrowDownLg"
+                          width="36"
+                          height="36"
+                          viewBox="0 0 36 36"
+                        >
+                          <path d="M2 10h32L18 26 2 10Z"></path>
+                        </svg>
+                      </a>
                     </button>
                   </div>
                 </div>
@@ -117,15 +136,20 @@
                       class=""
                       @click="voteEvent('agree', 'Answer', item.answerId)"
                     >
-                      <svg
-                        aria-hidden="true"
-                        class="svg-icon iconArrowUpLg"
-                        width="36"
-                        height="36"
-                        viewBox="0 0 36 36"
+                      <a
+                        href="javascript:void(0)"
+                        class="-link"
+                        title="This answer is useful"
                       >
-                        <path d="M2 26h32L18 10 2 26Z"></path>
-                      </svg>
+                        <svg
+                          aria-hidden="true"
+                          class="svg-icon iconArrowUpLg"
+                          width="36"
+                          height="36"
+                          viewBox="0 0 36 36"
+                        >
+                          <path d="M2 26h32L18 10 2 26Z"></path></svg
+                      ></a>
                     </button>
                     <div
                       class="vote-count"
@@ -138,15 +162,20 @@
                       class=""
                       @click="voteEvent('reject', 'Answer', item.answerId)"
                     >
-                      <svg
-                        aria-hidden="true"
-                        class="svg-icon iconArrowDownLg"
-                        width="36"
-                        height="36"
-                        viewBox="0 0 36 36"
+                      <a
+                        href="javascript:void(0)"
+                        class="-link"
+                        title="This answer is not useful"
                       >
-                        <path d="M2 10h32L18 26 2 10Z"></path>
-                      </svg>
+                        <svg
+                          aria-hidden="true"
+                          class="svg-icon iconArrowDownLg"
+                          width="36"
+                          height="36"
+                          viewBox="0 0 36 36"
+                        >
+                          <path d="M2 10h32L18 26 2 10Z"></path></svg
+                      ></a>
                     </button>
                   </div>
                 </div>
@@ -162,15 +191,21 @@
               <el-button
                 type="text"
                 @click="acceptAnswer(item.answerId)"
-                v-if="hasAuth">Accept this Answer</el-button>
+                v-if="hasAuth"
+                >Accept this Answer</el-button
+              >
               <el-button
                 type="text"
                 @click="followAnswer(item.answerId)"
-                v-if="item.isFollow">Follow this Answer</el-button>
+                v-if="item.isFollow"
+                >Follow this Answer</el-button
+              >
               <el-button
                 type="text"
                 @click="disfollowAnswer(item.answerId)"
-                v-else>Disfollow this Answer</el-button>
+                v-else
+                >Disfollow this Answer</el-button
+              >
             </el-main>
             <el-aside
               style="
@@ -238,7 +273,7 @@ export default {
         description: "",
       },
       hasAuth: false,
-      isFollow:false
+      isFollow: false,
     };
   },
   methods: {
@@ -247,14 +282,14 @@ export default {
       var eventId;
       var event;
       var data_raw;
-      url = "/api/api/" + a + b;
+      url = "/api/" + a + b;
       if (b == "Question") {
         data_raw = { questionId: this.question_id };
       } else {
         data_raw = { answerId: c };
       }
       this.$axios
-        .post(url, JSON.stringify(data_raw), {
+        .get(url, JSON.stringify(data_raw), {
           headers: {
             "Content-Type": "application/json",
             "x-auth-token": localStorage.getItem("token"),
@@ -274,7 +309,7 @@ export default {
     },
     async getQuestionDeatil() {
       this.$axios
-        .get("/api/api/question/getQuestion", {
+        .get("/api/question/getQuestion", {
           params: {
             id: this.question_id,
           },
@@ -284,7 +319,7 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data.data)
+          console.log(res.data.data);
           if (res.data.code === 200) {
             this.questionInfo = res.data.data[0];
             this.isFollow = res.data.data[1];
@@ -299,27 +334,28 @@ export default {
           }
         });
     },
-    disfollowQuestion(){
-      let params = new URLSearchParams()
-      params.append('questionid', this.question_id)
-      this.$axios.post("/api/api/followquestion/removefollow",params,{
-        headers:{
-          "x-auth-token":localStorage.getItem('token')
-        }
-      }).then((res)=>{
-        if(res.data.code === 200){
-          this.$message("Followes Question Successfully")
-        }
-        else if(res.data.code === 401){
-          this.$message("Please Login")
-        }
-        else{
-          this.$message("Net Error")
-        }
-      }).catch((error)=>{
-        console.log(error)
-        this.$message("Net Error")
-      })
+    disfollowQuestion() {
+      let params = new URLSearchParams();
+      params.append("questionid", this.question_id);
+      this.$axios
+        .post("/api/followquestion/removefollow", params, {
+          headers: {
+            "x-auth-token": localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$message("Followes Question Successfully");
+          } else if (res.data.code === 401) {
+            this.$message("Please Login");
+          } else {
+            this.$message("Net Error");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message("Net Error");
+        });
     },
     getMyTime(time) {
       var d = new Date(time);
@@ -342,27 +378,28 @@ export default {
     skipToTag(id) {
       this.$router.push({ path: "/tag", query: { id: id } });
     },
-    followQuestion(){
-      let params = new URLSearchParams()
-      params.append('questionid', this.question_id)
-      this.$axios.post("/api/api/followquestion/addfollow",params,{
-        headers:{
-          "x-auth-token":localStorage.getItem('token')
-        }
-      }).then((res)=>{
-        if(res.data.code === 200){
-          this.$message("Followes Question Successfully")
-        }
-        else if(res.data.code === 401){
-          this.$message("Please Login")
-        }
-        else{
-          this.$message("Net Error")
-        }
-      }).catch((error)=>{
-        console.log(error)
-        this.$message("Net Error")
-      })
+    followQuestion() {
+      let params = new URLSearchParams();
+      params.append("questionid", this.question_id);
+      this.$axios
+        .post("/api/followquestion/addfollow", params, {
+          headers: {
+            "x-auth-token": localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$message("Followes Question Successfully");
+          } else if (res.data.code === 401) {
+            this.$message("Please Login");
+          } else {
+            this.$message("Net Error");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message("Net Error");
+        });
     },
     postAnswer() {
       this.$axios
@@ -403,7 +440,7 @@ export default {
       var params = new URLSearchParams();
       params.append("id", this.question_id);
       this.$axios
-        .post("/api/api/question/addQuestionViews", params)
+        .post("/api/question/addQuestionViews", params)
         .then((res) => {})
         .catch((error) => {
           console.log(error);
@@ -415,7 +452,7 @@ export default {
       params.append("questionId", this.question_id);
       params.append("answerId", id);
       this.$axios
-        .post("/api/api/question/acceptAnswer", params)
+        .post("/api/question/acceptAnswer", params)
         .then((res) => {
           console.log(res);
           if (res.data.code === 200) {
@@ -429,11 +466,11 @@ export default {
           this.$message("Net Error");
         });
     },
-    followAnswer(id){
+    followAnswer(id) {
       let params = new URLSearchParams();
       params.append("answerid", id);
       this.$axios
-        .post("/api/api/followanswer/addfollow", params)
+        .post("/api/followanswer/addfollow", params)
         .then((res) => {
           console.log(res);
           if (res.data.code === 200) {
@@ -447,11 +484,11 @@ export default {
           this.$message("Net Error");
         });
     },
-    disfollowAnswer(id){
+    disfollowAnswer(id) {
       let params = new URLSearchParams();
       params.append("answerid", id);
       this.$axios
-        .post("/api/api/followanswer/removefollow", params)
+        .post("/api/followanswer/removefollow", params)
         .then((res) => {
           console.log(res);
           if (res.data.code === 200) {
@@ -464,7 +501,7 @@ export default {
           console.log(error);
           this.$message("Net Error");
         });
-    }
+    },
   },
   async mounted() {
     this.question_id = this.$route.query.id;

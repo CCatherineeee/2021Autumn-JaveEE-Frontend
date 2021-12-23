@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     getAllTag () {
-      this.$axios.get('/api/api/tag/getAllTag').then((res) => {
+      this.$axios.get('/api/tag/getAllTag').then((res) => {
         if (res.data.code === 200) {
           this.tagList = res.data.data[1]
           this.questionList = res.data.data[2]

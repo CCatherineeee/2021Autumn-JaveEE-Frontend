@@ -93,7 +93,7 @@ export default {
     getQuestions () {
       let params = new URLSearchParams()
       params.append('page', this.currentPage)
-      this.$axios.post("/api/api/question/hotquestion",params,{
+      this.$axios.post("/api/question/hotquestion",params,{
         headers:{
           "x-auth-token": localStorage.getItem("token")
         }

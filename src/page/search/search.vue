@@ -53,7 +53,7 @@ export default {
           var params = new URLSearchParams()
           params.append('keywords', this.$route.query.searchCode)
           params.append('page', 1)
-            this.$axios.post("/api/api/question/search" , params,{
+            this.$axios.post("/api/question/search" , params,{
               headers:{
                 "x-auth-token":localStorage.getItem('token')
               }

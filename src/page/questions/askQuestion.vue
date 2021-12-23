@@ -65,7 +65,7 @@ export default {
   methods: {
 
     postQuestion () {
-      this.$axios.post('/api/api/question/addQuestion', JSON.stringify(this.form),
+      this.$axios.post('/api/question/addQuestion', JSON.stringify(this.form),
         {
           headers: {
             'Content-Type': 'application/json',
