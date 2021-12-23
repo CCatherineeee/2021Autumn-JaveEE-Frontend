@@ -55,7 +55,7 @@ export default {
 
     data(){
         return {
-          succ:true,
+          succ:false,
             ruleForm:{
                 mailaddr:'',
             },

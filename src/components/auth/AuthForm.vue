@@ -4,7 +4,6 @@
   </div>
   <section class="content">
 
-    <!-- TODO: 添加logo-->
     <div className='icon-holder'>
       <Logo className='icon' />
     </div>
