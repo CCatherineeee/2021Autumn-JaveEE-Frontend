@@ -289,7 +289,8 @@ export default {
         data_raw = { answerId: c };
       }
       this.$axios
-        .get(url, JSON.stringify(data_raw), {
+        .get(url, {
+          params: data_raw,
           headers: {
             "Content-Type": "application/json",
             "x-auth-token": localStorage.getItem("token"),
@@ -505,6 +506,7 @@ export default {
   },
   async mounted() {
     this.question_id = this.$route.query.id;
+    await this.addQuestionView();
     await this.getQuestionDeatil();
   },
 };
