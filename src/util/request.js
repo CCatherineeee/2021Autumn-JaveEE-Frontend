@@ -9,7 +9,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json',
 
 // create an axios instance
 const service = axios.create({
-  baseURL: 'http://101.133.237.83:8080',
+  baseURL: 'http://localhost:5050',
   timeout: 50000, // request timeout
   async: true,
   crossDomain: true

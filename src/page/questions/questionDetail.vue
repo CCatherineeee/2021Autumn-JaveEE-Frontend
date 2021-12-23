@@ -16,11 +16,9 @@
               ></el-tag
             >
           </el-col>
-          <el-col span="4"
-            ><el-button type="primary" @click="followQuestion"
-              >Follow Question</el-button
-            ></el-col
-          >
+          <el-col v-if="isFollow" span="4"><el-button type="primary" @click="followQuestion">Follow Question</el-button></el-col>
+          <el-col v-else span="4"><el-button type="primary" @click="disfollowQuestion">Follow Question</el-button></el-col>
+
         </el-row>
       </div>
       <p>
@@ -164,9 +162,15 @@
               <el-button
                 type="text"
                 @click="acceptAnswer(item.answerId)"
-                v-if="hasAuth"
-                >accept this answer</el-button
-              >
+                v-if="hasAuth">Accept this Answer</el-button>
+              <el-button
+                type="text"
+                @click="followAnswer(item.answerId)"
+                v-if="item.isFollow">Follow this Answer</el-button>
+              <el-button
+                type="text"
+                @click="disfollowAnswer(item.answerId)"
+                v-else>Disfollow this Answer</el-button>
             </el-main>
             <el-aside
               style="
@@ -234,6 +238,7 @@ export default {
         description: "",
       },
       hasAuth: false,
+      isFollow:false
     };
   },
   methods: {
@@ -279,10 +284,12 @@ export default {
           },
         })
         .then((res) => {
+          console.log(res.data.data)
           if (res.data.code === 200) {
             this.questionInfo = res.data.data[0];
-            this.tagList = res.data.data[1];
-            this.answerList = res.data.data[2];
+            this.isFollow = res.data.data[1];
+            this.tagList = res.data.data[2];
+            this.answerList = res.data.data[3];
             this.isExsit = true;
             if (this.questionInfo.userId === localStorage.getItem("id")) {
               this.hasAuth = true;
@@ -291,6 +298,28 @@ export default {
             this.isExsit = false;
           }
         });
+    },
+    disfollowQuestion(){
+      let params = new URLSearchParams()
+      params.append('questionid', this.question_id)
+      this.$axios.post("/api/api/followquestion/removefollow",params,{
+        headers:{
+          "x-auth-token":localStorage.getItem('token')
+        }
+      }).then((res)=>{
+        if(res.data.code === 200){
+          this.$message("Followes Question Successfully")
+        }
+        else if(res.data.code === 401){
+          this.$message("Please Login")
+        }
+        else{
+          this.$message("Net Error")
+        }
+      }).catch((error)=>{
+        console.log(error)
+        this.$message("Net Error")
+      })
     },
     getMyTime(time) {
       var d = new Date(time);
@@ -312,7 +341,8 @@ export default {
     },
     skipToTag(id) {
       this.$router.push({ path: "/tag", query: { id: id } });
-    },followQuestion(){
+    },
+    followQuestion(){
       let params = new URLSearchParams()
       params.append('questionid', this.question_id)
       this.$axios.post("/api/api/followquestion/addfollow",params,{
@@ -399,23 +429,15 @@ export default {
           this.$message("Net Error");
         });
     },
-    skipToTag(id) {
-      this.$router.push({ path: "/tag", query: { id: id } });
-    },
-    followQuestion() {
+    followAnswer(id){
       let params = new URLSearchParams();
-      params.append("questionid", this.question_id);
+      params.append("answerid", id);
       this.$axios
-        .post("/api/api/followquestion/addfollow", params, {
-          headers: {
-            "x-auth-token": localStorage.getItem("token"),
-          },
-        })
+        .post("/api/api/followanswer/addfollow", params)
         .then((res) => {
+          console.log(res);
           if (res.data.code === 200) {
-            this.$message("Followes Question Successfully");
-          } else if (res.data.code === 401) {
-            this.$message("Please Login");
+            this.$message("Followed Successfully");
           } else {
             this.$message("Net Error");
           }
@@ -425,6 +447,24 @@ export default {
           this.$message("Net Error");
         });
     },
+    disfollowAnswer(id){
+      let params = new URLSearchParams();
+      params.append("answerid", id);
+      this.$axios
+        .post("/api/api/followanswer/removefollow", params)
+        .then((res) => {
+          console.log(res);
+          if (res.data.code === 200) {
+            this.$message("Followed Successfully");
+          } else {
+            this.$message("Net Error");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message("Net Error");
+        });
+    }
   },
   async mounted() {
     this.question_id = this.$route.query.id;

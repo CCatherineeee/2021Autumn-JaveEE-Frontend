@@ -8,8 +8,12 @@
   <p>{{questionList.length}} questions</p>
   <br />
   <el-row :gutter="4">
-    <el-col span="4"><el-button type="primary"  @click="followTag()">Follow Tag</el-button></el-col>
-    <el-col span="4"><el-button type="primary"  @click="ignoreTag()">Ignore Tag</el-button></el-col>
+    <el-col span="4"><el-button type="primary"  @click="followTag()" v-if="isFollow === false">Follow Tag</el-button></el-col>
+    <el-col span="4"><el-button type="primary"  @click="disfollowTag()" v-if="isFollow === true">Disfollow Tag</el-button></el-col>
+
+    <el-col span="4"><el-button type="primary"  @click="ignoreTag()" v-if="isIgnore === true && isFollow === false">Ignore Tag</el-button></el-col>
+    <el-col span="4"><el-button type="primary"  @click="disignoreTag()" v-if="isIgnore === false && isFollow === false">DisIgnore Tag</el-button></el-col>
+
     <el-col span="6"><el-button type="primary"  @click="dialogVisible = true">Edit Tag Description</el-button></el-col>
     <el-col span="4"><el-button type="primary"  @click="skipToAsk()">Ask Question</el-button></el-col>
   </el-row>
@@ -91,7 +95,9 @@ export default {
       userList: null,
       tagId: null,
       dialogVisible: false,
-      textarea:""
+      textarea:"",
+      isFollow:true,
+      isIgnore:true
     }
   },
   methods: {
@@ -99,6 +105,9 @@ export default {
       this.$axios.get('/api/api/tag/getTagById', {
         params: {
           id: this.tagId
+        },
+        headers:{
+          "x-auth-token":localStorage.getItem('token')
         }
       }).then((res) => {
         console.log(res.data)
@@ -106,6 +115,8 @@ export default {
           this.tagInfo = res.data.data[1]
           this.questionList = res.data.data[2]
           this.userList = res.data.data[3]
+          this.isFollow = res.data.data[4]
+          this.isIgnore = res.data.data[5]
         } else {
           this.$message('Tag Not Exist')
         }
@@ -173,6 +184,25 @@ export default {
         else{
           this.$message("Follow Successfully")
         }
+        location.reload()
+      })
+    },
+    disfollowTag(){
+      var params = new URLSearchParams()
+      params.append('tagid', this.tagId)
+      this.$axios.post("/api/api/followtag/removefollow",params,{
+        headers:{
+          "x-auth-token":localStorage.getItem('token')
+        }
+      }).then((res)=>{
+        if(res.data.code === 401){
+          this.$message("Please Login")
+        }
+        else{
+          this.$message("Disfollow Successfully")
+        }
+        location.reload()
+
       })
     },
     ignoreTag(){
@@ -189,6 +219,30 @@ export default {
         else if(res.data.code === 200){
           this.$message("Ignored Tag Successfully")
         }
+        location.reload()
+
+      }).catch((error)=>{
+        console.log(error)
+        this.$message("Net Error")
+      })
+
+    },
+    disignoreTag(){
+      let params = new URLSearchParams()
+      params.append('tagid', this.tagId)
+      this.$axios.post("/api/api/ignoretag/removefollow",params,{
+        headers:{
+          "x-auth-token":localStorage.getItem('token')
+        }
+      }).then((res)=>{
+        if(res.data.code === 401){
+          this.$message("Please Login")
+        }
+        else if(res.data.code === 200){
+          this.$message("Disignored Tag Successfully")
+        }
+        location.reload()
+
       }).catch((error)=>{
         console.log(error)
         this.$message("Net Error")

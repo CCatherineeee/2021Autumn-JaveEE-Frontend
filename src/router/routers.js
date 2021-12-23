@@ -49,7 +49,7 @@ const index = [
         component: ()=>import('../page/auth/changePwd')
       },
       {
-        path:'/api/users',
+        path:'/users',
         name:'Users',
         component:()=>import('../page/users/users')
       },
