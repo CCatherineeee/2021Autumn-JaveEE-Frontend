@@ -6,7 +6,7 @@ export function getUsers(data) {
     return request({
         url: '/api/users/square',
         method: 'get',
-        data: data
+        params: data
     })
 }
 
@@ -16,7 +16,7 @@ export function getUsersCount(data) {
     return request({
         url: '/api/users/square-count',
         method: 'get',
-        data:data
+        params:data
     })
 }
 
@@ -24,9 +24,9 @@ export function getUsersCount(data) {
 export function searchUsers(data) {
 
     return request({
-        url: '/api/users/serach',
+        url: '/api/users/search',
         method: 'get',
-        data: data
+        params: data
     })
 }
 
@@ -35,8 +35,8 @@ export function searchUsers(data) {
 export function getSearchCount(data) {
 
     return request({
-        url: '/api/users/serach-count',
+        url: '/api/users/search-count',
         method: 'get',
-        data:data
+        params:data
     })
 }

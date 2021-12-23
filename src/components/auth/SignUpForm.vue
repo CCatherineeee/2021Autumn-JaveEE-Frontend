@@ -65,29 +65,37 @@ export default {
     validateMail(value){
       var regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
       if (this.ruleForm.email != '' && !regEmail.test(this.ruleForm.email)) {
-          this.$message({
-              message: '邮箱格式不正确',
-              type: 'error'
-          })
+          
           this.ruleForm.email = ''
+          return false;
     }
+    return true;
     },
 
     validateInput(value){
       var passwordreg = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,16}/
           if (!passwordreg.test(value)) {
-            this.$message({
-          message:'密码必须由数字、字母、特殊字符组合,请输入6-16位',
-          type:"error"
-        })
+            
         return false;
           }else{
             return true;
           }
     },
     submitForm(){
-      this.validateMail(this.ruleForm.email)
-      this.validateInput(this.ruleForm.password)
+      if(!this.validateMail(this.ruleForm.email)){
+        this.$message({
+              message: '邮箱格式不正确',
+              type: 'error'
+          })
+        return;
+      }
+      if(!this.validateInput(this.ruleForm.password)){
+        this.$message({
+          message:'密码必须由数字、字母、特殊字符组合,请输入6-16位',
+          type:"error"
+        })
+        return ;
+      }
 
       register(JSON.stringify(this.ruleForm))
       .then((res)=>{

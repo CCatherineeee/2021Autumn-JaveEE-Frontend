@@ -9,7 +9,7 @@
 
     <el-main>
        <div className='users-box pl16 pr16 pb16'>
-          <el-input v-model="inputName" placeholder="filter by user" style="margin-top:10px;display:inline-block;width:40%" @keyup.enter="handleSearch"></el-input>
+          <el-input v-model="inputName" placeholder="filter by user" style="margin-top:10px;display:inline-block;width:40%" @keyup.enter.native="handleSearch"></el-input>
           <div  style="display:inline-block; float:right">
           <div style="display:inline-block; margin-right:20px">
           <label class="s-label">reputation</label>
@@ -44,7 +44,7 @@
             >
             <el-card class="box-card" v-if="rowItems * (r - 1) + 1<typeList.length">
               <div  :ref="rowItems * (r - 1)+1" class="text item ">
-                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+1].userId)">{{typeList[rowItems * (r - 1)+2].userName}}</el-button>               
+                <el-button type="text"  @click="clickUser(typeList[rowItems * (r - 1)+1].userId)">{{typeList[rowItems * (r - 1)+1].userName}}</el-button>               
               </div>
 
               <div  :ref="rowItems * (r - 1)+1" class="text item reputation-score">
@@ -83,8 +83,8 @@
       <div>
         <el-pagination
         @current-change="handleCurrentChange"
-        :current-page="curPage"
-         :page-size="40"
+        :current-page.sync="curPage"
+         :page-size="12"
           background
           layout="prev, pager, next"
           :total="itemNum">
@@ -117,26 +117,34 @@ export default {
       imgs: require("@/assets/empty_search.svg"),
 
       inputName:'',
-      sortType:0,
+      sortType:0, //事件类型
 
       typeList:[
-
       ],
-      rowItems:4,
+      rowItems:4, // 每行个数
       curPage:1,
 
-      itemNum:0,
+      itemNum:1, //结果个数
     }
   },
 
   computed:{
     rowNums: function () {
+    
       return Math.ceil(this.typeList.length / 4);
     },
 
   },
 
-  mouted(){
+  // updated:{
+  //   curPage:function(){
+  //     console.log('页数改变')
+  //     handleSortBy(this.sortType)
+  //   }
+  // },
+
+  mounted(){
+    console.log('初始化')
     this.handleSortBy('0');
 
   },
@@ -147,13 +155,17 @@ export default {
 
     },
     handleSortBy(type){
+      this.typeList=[]
+      this.inputName=''
+      this.curPage=1,
+
       console.log('新改变的type：',type)
       this.sortType=Number(type);
 
       let args={
         tab:"Reputation",
-        filter:this.curPage,
-        duration:this.sortType
+        filter:this.sortType,
+        pageIndex:this.curPage
 
       };
 
@@ -178,7 +190,20 @@ export default {
       getUsers(args)
       .then((res)=>{
         if(res.data.code===200){
-            this.typeList=res.data.data;
+          this.typeList=[]
+           for(var x in res.data.data){
+              let d={
+                userId:res.data.data[x].userId,
+                userName:res.data.data[x].userName,
+                reputation:res.data.data[x].reputation
+              }
+              if(this.sortType==7){
+                d["reputation"]=res.data.data[x].repChangeWeek;
+              }else if(this.sortType==1){
+                d["reputation"]=res.data.data[x].repChangeMonth;
+              }
+              this.typeList.push(d)
+          }
         }else{
           this.$message({
             message:"内部错误",
@@ -189,6 +214,7 @@ export default {
     },
 
     handleSearch(){
+      console.log('搜索用户',this.inputName)
       getSearchCount(this.inputName)
       .then((res)=>{
         if(res.data.code===200){
@@ -200,10 +226,23 @@ export default {
           })
         }
       })
+
+      let that=this
       searchUsers(this.inputName)
       .then((res)=>{
         if(res.data.code==200){
-          this.typeList=res.data.data;
+          let typeList=[]
+          for(var x in res.data.data){
+              let d={
+                userId:res.data.data[x].userId,
+                userName:res.data.data[x].userName,
+                reputation:res.data.data[x].reputation
+              }
+             
+              typeList.push(d)
+          }
+          this.typeList=typeList
+          console.log('搜索结果',this.typeList)
         }else{
           this.$message({
             message:"内部错误",
@@ -215,16 +254,30 @@ export default {
     },
 
     handleCurrentChange(){
-      args:{
-        tab:"Reputation";
-        filter:this.curPage;
-        duration:this.sortType
-
+      console.log('跳转页面到',this.curPage)
+      let args={
+        tab:"Reputation",
+        filter:this.sortType,
+        pageIndex:this.curPage
       };
       getUsers(args)
       .then((res)=>{
         if(res.data.code==200){
-            this.typeList=res.data.data;
+            this.typeList=[]
+           for(var x in res.data.data){
+              let d={
+                userId:res.data.data[x].userId,
+                userName:res.data.data[x].userName,
+                reputation:res.data.data[x].reputation
+              }
+              if(this.sortType==7){
+                
+                d["reputation"]=res.data.data[x].repChangeWeek;
+              }else if(this.sortType==1){
+                d["reputation"]=res.data.data[x].repChangeMonth;
+              }
+              this.typeList.push(d)
+           }
         }else{
           this.$message({
             message:"内部错误",
